@@ -12,20 +12,20 @@
         "y": 2.334815340909091
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "Bravo"
     },
     {
       "anchor": {
-        "x": 1.6107263513477157,
-        "y": 0.605912162162241
+        "x": 1.611,
+        "y": 0.606
       },
       "prevControl": {
-        "x": 1.6922758365510258,
-        "y": 1.0780027396384249
+        "x": 1.69254948520331,
+        "y": 1.0780905774761838
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "Nemo"
     }
   ],
   "rotationTargets": [],
@@ -42,7 +42,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -125.655328097593
+    "rotation": -124.75660881338462
   },
   "reversed": false,
   "folder": "Bravo",

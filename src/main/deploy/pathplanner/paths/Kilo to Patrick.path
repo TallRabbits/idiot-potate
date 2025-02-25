@@ -3,29 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.611,
-        "y": 0.606
+        "x": 3.9188352272727274,
+        "y": 5.5257244318181815
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.6496733714356884,
-        "y": 0.852990628044461
+        "x": 1.9408136724503453,
+        "y": 4.854091451270661
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "Kilo"
     },
     {
       "anchor": {
-        "x": 3.5574324324324325,
-        "y": 2.740371621621621
+        "x": 1.7250852272777133,
+        "y": 7.48015625
       },
       "prevControl": {
-        "x": 3.144299733995772,
-        "y": 2.2930154075153992
+        "x": 2.416520893879681,
+        "y": 7.110414060344029
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "Patrick "
     }
   ],
   "rotationTargets": [],
@@ -42,13 +42,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 60.01836063115063
+    "rotation": 126.3843518158359
   },
   "reversed": false,
-  "folder": "Nemo",
+  "folder": "Kilo",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -127.04382951338154
+    "rotation": -60.255118703057654
   },
   "useDefaultConstraints": true
 }

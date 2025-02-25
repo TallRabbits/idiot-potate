@@ -8,24 +8,24 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.517447699961801,
-        "y": 6.182825600841029
+        "x": 3.2906249999999995,
+        "y": 6.39325284090909
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "Strawberry"
     },
     {
       "anchor": {
-        "x": 5.563,
-        "y": 5.24
+        "x": 2.911704545454545,
+        "y": 4.1995028409090915
       },
       "prevControl": {
-        "x": 6.410764166688189,
-        "y": 6.021440753292565
+        "x": 2.8618465909090913,
+        "y": 5.50578125
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "Alpha"
     }
   ],
   "rotationTargets": [],
@@ -42,10 +42,10 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -119.19748604606443
+    "rotation": -1.1691393279073978
   },
   "reversed": false,
-  "folder": "Pineapple",
+  "folder": "Strawberry",
   "idealStartingState": {
     "velocity": 0,
     "rotation": 179.21517539700804
