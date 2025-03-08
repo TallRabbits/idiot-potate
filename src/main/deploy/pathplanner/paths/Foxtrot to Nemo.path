@@ -1,0 +1,54 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 5.444847972972973,
+        "y": 2.6514358108108103
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 5.197804054054054,
+        "y": 2.019003378378377
+      },
+      "isLocked": false,
+      "linkedName": "Foxtrot"
+    },
+    {
+      "anchor": {
+        "x": 1.79847972972973,
+        "y": 0.8529560810810801
+      },
+      "prevControl": {
+        "x": 1.4009496421432528,
+        "y": 0.6802377890637591
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "Nemo"
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [],
+  "pointTowardsZones": [],
+  "eventMarkers": [],
+  "globalConstraints": {
+    "maxVelocity": 3.0,
+    "maxAcceleration": 3.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0,
+    "nominalVoltage": 12.0,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": -126.38435181583594
+  },
+  "reversed": false,
+  "folder": "Foxtrot",
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": 120.1916229609576
+  },
+  "useDefaultConstraints": true
+}

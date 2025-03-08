@@ -1,0 +1,54 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 3.853885135135135,
+        "y": 2.4636824324324325
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 2.2281974333032437,
+        "y": 2.7328825708218463
+      },
+      "isLocked": false,
+      "linkedName": "Delta"
+    },
+    {
+      "anchor": {
+        "x": 1.79847972972973,
+        "y": 0.8529560810810801
+      },
+      "prevControl": {
+        "x": 2.1052592006446904,
+        "y": 1.3238856703546333
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "Nemo"
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [],
+  "pointTowardsZones": [],
+  "eventMarkers": [],
+  "globalConstraints": {
+    "maxVelocity": 3.0,
+    "maxAcceleration": 3.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0,
+    "nominalVoltage": 12.0,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": -126.38435181583594
+  },
+  "reversed": false,
+  "folder": "Delta",
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": 59.88626684901757
+  },
+  "useDefaultConstraints": true
+}

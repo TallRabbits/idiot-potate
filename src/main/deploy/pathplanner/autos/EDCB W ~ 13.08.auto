@@ -19,31 +19,31 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Nemo to Charlie"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Charlie to Nemo"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
             "pathName": "Nemo to Delta"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Delta to Nemo"
+            "pathName": "Detla to Timmy"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Nemo to Bravo"
+            "pathName": "Timmy to Charlie"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Charlie to Retard"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Retard to Bravo"
           }
         }
       ]
