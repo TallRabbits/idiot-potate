@@ -24,7 +24,7 @@ public class ElevatorConstants {
         elevatorConfig.Slot0.kA = 0.0;
         elevatorConfig.Slot0.kP = 0.0;
         elevatorConfig.Slot0.kI = 0.0;
-        elevatorConfig.Slot0.kP = 0.0;
+        elevatorConfig.Slot0.kD = 0.0;
         elevatorConfig.Slot0.GravityType = GravityTypeValue.Elevator_Static;
         elevatorConfig.MotionMagic.MotionMagicAcceleration = 2.5;
         elevatorConfig.MotionMagic.MotionMagicCruiseVelocity = 1;
