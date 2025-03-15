@@ -30,10 +30,12 @@ public class Elevator extends SubsystemBase {
 
     // Motor Telemetry
     private final StatusSignal<Double> elevatorLeaderPosition;
+    private final StatusSignal<Double> elevatorLeaderVelocity;
     private final StatusSignal<Double> elevatorLeaderSupplyCurrent;
     private final StatusSignal<Double> elevatorLeaderTempC;
 
     private final StatusSignal<Double> elevatorFollowerPosition;
+    private final StatusSignal<Double> elevatorFollowerVelocity;
     private final StatusSignal<Double> elevatorFollowerSupplyCurrent;
     private final StatusSignal<Double> elevatorFollowerTempC;
 
@@ -42,11 +44,13 @@ public class Elevator extends SubsystemBase {
         elevatorLeader.getConfigurator().apply(elevatorConfig);
         elevatorLeader.setPosition(0);
         elevatorLeaderPosition = elevatorLeader.getPosition();
+        elevatorLeaderVelocity = elevatorLeader.getVelocity();
         elevatorLeaderSupplyCurrent = elevatorLeader.getSupplyCurrent();
         elevatorLeaderTempC = elevatorLeader.getDeviceTemp();
 
         elevatorFollower.setControl(elevatorFollowerRequest);
         elevatorFollowerPosition = elevatorFollower.getPosition();
+        elevatorFollowerVelocity = elevatorFollower.getVelocity();
         elevatorFollowerSupplyCurrent = elevatorFollower.getSupplyCurrent();
         elevatorFollowerTempC = elevatorFollower.getDeviceTemp();
     }
@@ -61,6 +65,18 @@ public class Elevator extends SubsystemBase {
         elevatorLeader.setControl(elevatorLeaderRequest.withPosition(curAng - 0.01));
     }
     
+    public void elevatorToPosition(double height){
+        elevatorLeader.setControl(elevatorLeaderRequest.withPosition(height));
+    }
+
+    public void detectStallAndReset(){
+        if (elevatorLeaderSupplyCurrent.getValueAsDouble() > HIGH_CURRENT_THRESHOLD){
+            if (elevatorLeaderVelocity.getValueAsDouble() < LOW_VELOCITY_THRESHOLD){
+                elevatorLeader.setPosition(0);
+            }
+        }
+    }
+
     public void stop() {
         elevatorLeader.setControl(neutral);
     }
@@ -69,18 +85,22 @@ public class Elevator extends SubsystemBase {
     public void periodic() {
         BaseStatusSignal.refreshAll(
             elevatorLeaderPosition, 
+            elevatorLeaderVelocity, 
             elevatorLeaderSupplyCurrent,
             elevatorLeaderTempC, 
             elevatorFollowerPosition, 
+            elevatorFollowerVelocity, 
             elevatorFollowerSupplyCurrent, 
             elevatorFollowerTempC
         );
 
         SmartDashboard.putNumber("Elevator Leader Position", elevatorLeaderPosition.getValueAsDouble());
+        SmartDashboard.putNumber("Elevator Leader Velocity", elevatorLeaderVelocity.getValueAsDouble());
         SmartDashboard.putNumber("Elevator Leader Supply Current", elevatorLeaderSupplyCurrent.getValueAsDouble());
         SmartDashboard.putNumber("Elevator Leader Temp C", elevatorLeaderTempC.getValueAsDouble());
 
         SmartDashboard.putNumber("Elevator Follower Position", elevatorFollowerPosition.getValueAsDouble());
+        SmartDashboard.putNumber("Elevator Follower Velocity", elevatorFollowerVelocity.getValueAsDouble());
         SmartDashboard.putNumber("Elevator Follower Supply Current", elevatorFollowerSupplyCurrent.getValueAsDouble());
         SmartDashboard.putNumber("Elevator Follower Temp C", elevatorFollowerTempC.getValueAsDouble());
     }
