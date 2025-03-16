@@ -18,7 +18,15 @@ public class Intake extends SubsystemBase{
     private final NeutralOut neutral = new NeutralOut();
      
     public Intake(){
-        intakeRoller.getConfigurator().apply(IntakeConstants.intakeConfig);
-        intakePivot.getConfigurator().apply(IntakeConstants.intakeConfig);
+        intakeRoller.getConfigurator().apply(IntakeConstants.rollerConfig);
+        intakePivot.getConfigurator().apply(IntakeConstants.pivotConfig);
+    }
+
+    public void setIntakeRoller(double rps) {
+        intakeRoller.setControl(intakeRollerRequesnt.withVelocity(rps));
+    }
+
+    public void setIntakePivot (double angle) {
+        intakePivot.setControl(intakePivotRequest.withPosition(angle));
     }
 }
