@@ -116,6 +116,7 @@ public class Pooper extends SubsystemBase {
         return sysIdRoutine.dynamic(direction);
     }
             
+        
     @Override
     public void periodic() {
         SmartDashboard.putBoolean("Pooper/Coral Sensor/Has Coral", coralSensorHasCoral.getValue());
