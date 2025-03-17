@@ -9,11 +9,17 @@ import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.hardware.TalonFX;
 
+import edu.wpi.first.units.measure.Angle;
+import edu.wpi.first.units.measure.AngularVelocity;
+import edu.wpi.first.units.measure.Current;
+import edu.wpi.first.units.measure.Temperature;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import static frc.robot.Constants.*;
 import static frc.robot.subsystems.elevator.ElevatorConstants.*;
+
+import java.util.Currency;
 
 
 public class Elevator extends SubsystemBase {
@@ -29,15 +35,15 @@ public class Elevator extends SubsystemBase {
     private final Follower elevatorFollowerRequest = new Follower(ELEVATOR_LEADER_ID, false);
 
     // Motor Telemetry
-    private final StatusSignal<Double> elevatorLeaderPosition;
-    private final StatusSignal<Double> elevatorLeaderVelocity;
-    private final StatusSignal<Double> elevatorLeaderSupplyCurrent;
-    private final StatusSignal<Double> elevatorLeaderTempC;
+    private final StatusSignal<Angle> elevatorLeaderPosition;
+    private final StatusSignal<AngularVelocity> elevatorLeaderVelocity;
+    private final StatusSignal<Current> elevatorLeaderSupplyCurrent;
+    private final StatusSignal<Temperature> elevatorLeaderTempC;
 
-    private final StatusSignal<Double> elevatorFollowerPosition;
-    private final StatusSignal<Double> elevatorFollowerVelocity;
-    private final StatusSignal<Double> elevatorFollowerSupplyCurrent;
-    private final StatusSignal<Double> elevatorFollowerTempC;
+    private final StatusSignal<Angle> elevatorFollowerPosition;
+    private final StatusSignal<AngularVelocity> elevatorFollowerVelocity;
+    private final StatusSignal<Current> elevatorFollowerSupplyCurrent;
+    private final StatusSignal<Temperature> elevatorFollowerTempC;
 
     public Elevator() {
         elevatorLeader.getConfigurator().apply(currentLimit);

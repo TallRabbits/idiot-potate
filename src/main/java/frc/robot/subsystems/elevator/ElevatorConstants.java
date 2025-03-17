@@ -7,12 +7,12 @@ import com.ctre.phoenix6.signals.NeutralModeValue;
 import static frc.robot.Constants.*;
 
 public class ElevatorConstants {
+    public static final double HIGH_CURRENT_THRESHOLD = 120;
     public static final double LOW_VELOCITY_THRESHOLD = 1.0;
 
     public static final TalonFXConfiguration currentLimit = new TalonFXConfiguration();
     static {
         currentLimit.CurrentLimits.SupplyCurrentLimit = SUPPLY_CURRENT_LIMIT;
-        currentLimit.CurrentLimits.SupplyCurrentThreshold = 1.5;
         currentLimit.CurrentLimits.SupplyCurrentLimitEnable = true;
     }
 
