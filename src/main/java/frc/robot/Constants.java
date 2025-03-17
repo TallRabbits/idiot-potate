@@ -3,7 +3,9 @@ package frc.robot;
 public class Constants {
     public static final String CANBUS_CANIVORE = "canivore";
     public static final String CANBUS_RIO = "rio";
-
+    
+    public static final String[] LIMELIGHT_NAMES = {"limelight1", "limelight2"};
+  
     /* Elevator IDs */
     public static final int ELEVATOR_LEADER_ID = 1;
     public static final int ELEVATOR_FOLLOWER_ID = 2;
