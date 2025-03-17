@@ -1,6 +1,7 @@
 package frc.robot.subsystems.elevator;
 
 import com.ctre.phoenix6.BaseStatusSignal;
+import com.ctre.phoenix6.SignalLogger;
 import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
@@ -13,8 +14,11 @@ import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.measure.Current;
 import edu.wpi.first.units.measure.Temperature;
+import static edu.wpi.first.units.Units.*;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 
 import static frc.robot.Constants.*;
 import static frc.robot.subsystems.elevator.ElevatorConstants.*;
@@ -33,6 +37,7 @@ public class Elevator extends SubsystemBase {
     // Elevator control requests
     private final MotionMagicVoltage elevatorLeaderRequest = new MotionMagicVoltage(0.0);
     private final Follower elevatorFollowerRequest = new Follower(ELEVATOR_LEADER_ID, false);
+    private final VoltageOut sysIdControl = new VoltageOut(0.0);
 
     // Motor Telemetry
     private final StatusSignal<Angle> elevatorLeaderPosition;
@@ -44,6 +49,22 @@ public class Elevator extends SubsystemBase {
     private final StatusSignal<AngularVelocity> elevatorFollowerVelocity;
     private final StatusSignal<Current> elevatorFollowerSupplyCurrent;
     private final StatusSignal<Temperature> elevatorFollowerTempC;
+
+    private final SysIdRoutine sysIdRoutine = 
+    new SysIdRoutine(
+        new SysIdRoutine.Config(
+            null,         // Use default ramp rate (1 V/s)
+            Volts.of(4), // Reduce dynamic voltage to 4 to prevent brownout
+            null,          // Use default timeout (10 s)
+                                    // Log state with Phoenix SignalLogger class
+            state -> SignalLogger.writeString("state", state.toString())
+        ),
+        new SysIdRoutine.Mechanism(
+            volts -> elevatorLeader.setControl(sysIdControl.withOutput(volts)),
+            null,
+            this
+        )
+    );
 
     public Elevator() {
         elevatorLeader.getConfigurator().apply(currentLimit);
@@ -85,6 +106,14 @@ public class Elevator extends SubsystemBase {
 
     public void stop() {
         elevatorLeader.setControl(neutral);
+    }
+
+    public Command sysIdQuasistatic(SysIdRoutine.Direction direction) {
+        return sysIdRoutine.quasistatic(direction);
+    }
+
+    public Command sysIdDynamic(SysIdRoutine.Direction direction ) { 
+        return sysIdRoutine.dynamic(direction);
     }
 
     @Override

@@ -44,5 +44,4 @@ public static final TalonFXConfiguration algaeConfig = new TalonFXConfiguration(
     public static final double PIVOT_SCORING_POS_BARGE = 0.0;
     public static final double PIVOT_REMOVE_ALGAE_POS = 0.0;
     public static final double PIVOT_GND_TRANSFER_POS = 0.0;
-
 }

@@ -32,7 +32,7 @@ public class ElevatorConstants {
         elevatorConfig.Feedback.SensorToMechanismRatio = 133.33;
         elevatorConfig.SoftwareLimitSwitch.ForwardSoftLimitEnable = true;
         elevatorConfig.SoftwareLimitSwitch.ReverseSoftLimitEnable = true;
-        elevatorConfig.SoftwareLimitSwitch.ForwardSoftLimitThreshold = 0.19;
+        elevatorConfig.SoftwareLimitSwitch.ForwardSoftLimitThreshold = 0.0;
         elevatorConfig.SoftwareLimitSwitch.ReverseSoftLimitThreshold = 0.0;
     }
 }

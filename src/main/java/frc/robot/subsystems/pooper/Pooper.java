@@ -11,19 +11,14 @@ import com.ctre.phoenix6.hardware.TalonFX;
 
 import static edu.wpi.first.units.Units.*;
 
-import java.lang.module.ResolutionException;
-
-import edu.wpi.first.units.DistanceUnit;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.measure.Current;
-import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj.sysid.SysIdRoutineLog;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
-import frc.robot.subsystems.pooper.PooperConstants.*;
+import static frc.robot.subsystems.pooper.PooperConstants.*;
 import com.ctre.phoenix6.SignalLogger;
 
 public class Pooper extends SubsystemBase {
@@ -47,10 +42,26 @@ public class Pooper extends SubsystemBase {
     private final StatusSignal<Double> pivotTarget = pooperPivot.getClosedLoopReference();
     private final StatusSignal<Double> pivotError = pooperPivot.getClosedLoopError();
 
+    private final SysIdRoutine sysIdRoutine = 
+    new SysIdRoutine(
+        new SysIdRoutine.Config(
+            null,         // Use default ramp rate (1 V/s)
+            Volts.of(4), // Reduce dynamic voltage to 4 to prevent brownout
+            null,          // Use default timeout (10 s)
+                                   // Log state with Phoenix SignalLogger class
+            state -> SignalLogger.writeString("state", state.toString())
+        ),
+        new SysIdRoutine.Mechanism(
+            volts -> pooperPivot.setControl(sysIdControl.withOutput(volts)),
+            null,
+            this
+        )
+    );
+
     public Pooper() {
-        coralRoller.getConfigurator().apply(PooperConstants.coralConfig);
-        algaeRoller.getConfigurator().apply(PooperConstants.algaeConfig);
-        pooperPivot.getConfigurator().apply(PooperConstants.pooperPivotConfig);
+        coralRoller.getConfigurator().apply(coralConfig);
+        algaeRoller.getConfigurator().apply(algaeConfig);
+        pooperPivot.getConfigurator().apply(pooperPivotConfig);
     }
 
     public void setCoralRoller(double rps) {
@@ -97,35 +108,19 @@ public class Pooper extends SubsystemBase {
         }
     }
 
-    private final SysIdRoutine sysIdRoutine = 
-        new SysIdRoutine(
-            new SysIdRoutine.Config(
-                null,         // Use default ramp rate (1 V/s)
-                Volts.of(4), // Reduce dynamic voltage to 4 to prevent brownout
-                null,          // Use default timeout (10 s)
-                                       // Log state with Phoenix SignalLogger class
-                state -> SignalLogger.writeString("state", state.toString())
-            ),
-            new SysIdRoutine.Mechanism(
-                volts -> pooperPivot.setControl(sysIdControl.withOutput(volts)),
-                null,
-                this
-            )
-        );
+    public Command sysIdQuasistatic(SysIdRoutine.Direction direction) {
+        return sysIdRoutine.quasistatic(direction);
+    }
 
-        public Command sysIdQuasistatic(SysIdRoutine.Direction direction) {
-            return sysIdRoutine.quasistatic(direction);
-        }
-
-        public Command sysIdDynamic(SysIdRoutine.Direction direction ) { 
-            return sysIdRoutine.dynamic(direction);
-        }
+    public Command sysIdDynamic(SysIdRoutine.Direction direction ) { 
+        return sysIdRoutine.dynamic(direction);
+    }
             
     @Override
     public void periodic() {
         SmartDashboard.putBoolean("Pooper/Coral Sensor/Has Coral", coralSensorHasCoral.getValue());
         }
-    }
+}
 
     
 
