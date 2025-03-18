@@ -9,6 +9,4 @@ import static frc.robot.Constants.*;
 public class Climber extends SubsystemBase {
     private final TalonFX climberLeader = new TalonFX(CLIMBER_LEADER_ID, CANBUS_RIO);
     private final TalonFX climberFollower = new TalonFX(CLIMBER_FOLLOWER_ID, CANBUS_RIO);
-
-    
 }
