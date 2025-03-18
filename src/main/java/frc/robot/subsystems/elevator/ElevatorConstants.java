@@ -35,4 +35,16 @@ public class ElevatorConstants {
         elevatorConfig.SoftwareLimitSwitch.ForwardSoftLimitThreshold = 0.0;
         elevatorConfig.SoftwareLimitSwitch.ReverseSoftLimitThreshold = 0.0;
     }
+
+    public static final double ELEVATOR_INTAKE_CLEARANCE_POS = 0.0;
+    public static final double ELEVATOR_INTAKE_TRANSFER_POS = 0.0;
+
+    public static final double ELEVATOR_CORAL_STATION_POS = 0.0;
+
+    public static final double ELEVATOR_L1_POS = 0.0;
+    public static final double ELEVATOR_L2_POS = 0.0;
+    public static final double ELEVATOR_L3_POS = 0.0;
+    public static final double ELEVATOR_L4_POS = 0.0;
+
+    public static final double ELEVATOR_BARGE_POS = 0.0;
 }

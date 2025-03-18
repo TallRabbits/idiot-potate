@@ -1,11 +1,11 @@
 package frc.robot;
 
 public class Constants {
-    public static final String CANBUS_CANIVORE = "canivore";
+    public static final String CANBUS_CANIVORE = "drivetrain";
     public static final String CANBUS_RIO = "rio";
     
-    public static final String[] LIMELIGHT_NAMES = {"limelight1", "limelight2"};
-  
+    public static final String[] LIMELIGHT_NAMES = {"limelight_elevator", "limelight_swerve"};
+
     /* Elevator IDs */
     public static final int ELEVATOR_LEADER_ID = 1;
     public static final int ELEVATOR_FOLLOWER_ID = 2;
@@ -22,7 +22,8 @@ public class Constants {
     public static final int CORAL_ROLLER_ID = 7;
     public static final int ALGAE_ROLLER_ID = 8;
     public static final int POOPER_PIVOT_ID = 9;
+    public static final int CORAL_SENSOR_ID = 10;
 
     /* Supply Current Limit */
-    public static final int SUPPLY_CURRENT_LIMIT = 60;
+    public static final int SUPPLY_CURRENT_LIMIT = 40;
 }

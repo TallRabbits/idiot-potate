@@ -6,7 +6,6 @@ import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.controls.NeutralOut;
-import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.hardware.TalonFX;
 
@@ -22,9 +21,6 @@ import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 
 import static frc.robot.Constants.*;
 import static frc.robot.subsystems.elevator.ElevatorConstants.*;
-
-import java.util.Currency;
-
 
 public class Elevator extends SubsystemBase {
     // Elevator motors

@@ -1,6 +1,5 @@
 package frc.robot.subsystems.pooper;
 
-import com.ctre.phoenix6.BaseStatusSignal;
 import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.controls.NeutralOut;
@@ -8,6 +7,7 @@ import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.hardware.CANrange;
 import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.SignalLogger;
 
 import static edu.wpi.first.units.Units.*;
 
@@ -19,12 +19,12 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import static frc.robot.subsystems.pooper.PooperConstants.*;
-import com.ctre.phoenix6.SignalLogger;
+import static frc.robot.Constants.*;
 
 public class Pooper extends SubsystemBase {
-    private final TalonFX coralRoller = new TalonFX(0);
-    private final TalonFX algaeRoller = new TalonFX(0);
-    private final TalonFX pooperPivot = new TalonFX(0);
+    private final TalonFX coralRoller = new TalonFX(CORAL_ROLLER_ID);
+    private final TalonFX algaeRoller = new TalonFX(ALGAE_ROLLER_ID);
+    private final TalonFX pooperPivot = new TalonFX(POOPER_PIVOT_ID);
 
     private final CANrange coralSensor = new CANrange(0);
 
@@ -116,7 +116,6 @@ public class Pooper extends SubsystemBase {
         return sysIdRoutine.dynamic(direction);
     }
             
-        
     @Override
     public void periodic() {
         SmartDashboard.putBoolean("Pooper/Coral Sensor/Has Coral", coralSensorHasCoral.getValue());
