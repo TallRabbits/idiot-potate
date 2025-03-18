@@ -20,6 +20,12 @@ import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
+import frc.robot.subsystems.pooper.Pooper;
+import frc.robot.subsystems.pooper.Pooper.*;
+import frc.robot.subsystems.elevator.Elevator.*;
+import frc.robot.subsystems.intake.Intake.*;
+import frc.robot.subsystems.elevator.ElevatorConstants.*;
+import frc.robot.subsystems.pooper.PooperConstants.*;
 
 public class RobotContainer {
     private double MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
@@ -62,6 +68,10 @@ public class RobotContainer {
             )
         );
 
+        private void configureBindings() {
+            
+        }
+
         joystick.a().whileTrue(drivetrain.applyRequest(() -> brake));
         joystick.b().whileTrue(drivetrain.applyRequest(() ->
             point.withModuleDirection(new Rotation2d(-joystick.getLeftY(), -joystick.getLeftX()))
@@ -70,6 +80,8 @@ public class RobotContainer {
         joystick.pov(0).whileTrue(drivetrain.applyRequest(() ->
             forwardStraight.withVelocityX(0.5).withVelocityY(0))
         );
+        joystick.pov(90).whileTrue();
+
         joystick.pov(180).whileTrue(drivetrain.applyRequest(() ->
             forwardStraight.withVelocityX(-0.5).withVelocityY(0))
         );
