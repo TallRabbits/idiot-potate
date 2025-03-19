@@ -1,5 +1,7 @@
 package frc.robot.subsystems.intake;
 
+import java.util.function.BooleanSupplier;
+
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.controls.NeutralOut;
 import com.ctre.phoenix6.controls.VelocityVoltage;
@@ -26,7 +28,11 @@ public class Intake extends SubsystemBase{
         intakeRoller.setControl(intakeRollerRequesnt.withVelocity(rps));
     }
 
-    public void runIntakePivot (double angle) {
+    public void runIntakePivot(double angle) {
         intakePivot.setControl(intakePivotRequest.withPosition(angle));
+    }
+
+    public BooleanSupplier pivotAtTarget() {
+        return () -> intakePivot.getClosedLoopError().getValue() < 0.1;
     }
 }

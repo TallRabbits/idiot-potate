@@ -10,6 +10,7 @@ import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.hardware.TalonFX;
 
 import edu.wpi.first.math.filter.Debouncer;
+import edu.wpi.first.math.filter.Debouncer.DebounceType;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.measure.Current;
@@ -65,6 +66,8 @@ public class Elevator extends SubsystemBase {
         )
     );
 
+    private final Debouncer m_debouncer = new Debouncer(0.1, DebounceType.kBoth);
+
     public Elevator() {
         elevatorLeader.getConfigurator().apply(currentLimit);
         elevatorLeader.getConfigurator().apply(elevatorConfig);
@@ -112,7 +115,7 @@ public class Elevator extends SubsystemBase {
     }
 
     public BooleanSupplier isMovementSafe() {
-        return () -> this.isElevatorClear().getAsBoolean() && this.willElevatorClear().getAsBoolean();
+        return () -> m_debouncer.calculate(this.isElevatorClear().getAsBoolean() && this.willElevatorClear().getAsBoolean());
     }
 
     public void detectStallAndReset() {
