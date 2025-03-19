@@ -9,6 +9,7 @@ import com.ctre.phoenix6.controls.NeutralOut;
 import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.hardware.TalonFX;
 
+import edu.wpi.first.math.filter.Debouncer;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.measure.Current;
@@ -21,6 +22,8 @@ import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 
 import static frc.robot.Constants.*;
 import static frc.robot.subsystems.elevator.ElevatorConstants.*;
+
+import java.util.function.BooleanSupplier;
 
 public class Elevator extends SubsystemBase {
     // Elevator motors
@@ -50,7 +53,7 @@ public class Elevator extends SubsystemBase {
     new SysIdRoutine(
         new SysIdRoutine.Config(
             null,         // Use default ramp rate (1 V/s)
-            Volts.of(4), // Reduce dynamic voltage to 4 to prevent brownout
+            Volts.of(2), // Reduce dynamic voltage to 2
             null,          // Use default timeout (10 s)
                                     // Log state with Phoenix SignalLogger class
             state -> SignalLogger.writeString("state", state.toString())
@@ -78,23 +81,43 @@ public class Elevator extends SubsystemBase {
         elevatorFollowerTempC = elevatorFollower.getDeviceTemp();
     }
 
-    public void elevatorUp() {
+    public void elevatorNudgeUp() {
         var curAng = elevatorLeader.getPosition().getValueAsDouble();
         elevatorLeader.setControl(elevatorLeaderRequest.withPosition(curAng + 0.01));
     }
 
-    public void elevatorDown() {
+    public void elevatorNudgeDown() {
         var curAng = elevatorLeader.getPosition().getValueAsDouble();
         elevatorLeader.setControl(elevatorLeaderRequest.withPosition(curAng - 0.01));
     }
-    
-    public void elevatorToPosition(double height){
+
+    public void elevatorToPosition(double height) {
         elevatorLeader.setControl(elevatorLeaderRequest.withPosition(height));
     }
 
-    public void detectStallAndReset(){
-        if (elevatorLeaderSupplyCurrent.getValueAsDouble() > HIGH_CURRENT_THRESHOLD){
-            if (elevatorLeaderVelocity.getValueAsDouble() < LOW_VELOCITY_THRESHOLD){
+    public boolean elevatorAtTarget() {
+        if (elevatorLeader.getClosedLoopError().getValue() < 0.1) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public BooleanSupplier isElevatorClear() {
+        return () -> elevatorLeaderPosition.getValueAsDouble() < ELEVATOR_INTAKE_LOWER_DANGER_POS && elevatorLeaderPosition.getValueAsDouble() > ELEVATOR_INTAKE_UPPER_DANGER_POS;
+    }
+
+    public BooleanSupplier willElevatorClear() {
+        return () -> elevatorLeader.getClosedLoopReference().getValueAsDouble() > ELEVATOR_INTAKE_LOWER_DANGER_POS && elevatorLeader.getClosedLoopReference().getValueAsDouble() < ELEVATOR_INTAKE_UPPER_DANGER_POS && !this.elevatorAtTarget();
+    }
+
+    public BooleanSupplier isMovementSafe() {
+        return () -> this.isElevatorClear().getAsBoolean() && this.willElevatorClear().getAsBoolean();
+    }
+
+    public void detectStallAndReset() {
+        if (elevatorLeaderSupplyCurrent.getValueAsDouble() > HIGH_CURRENT_THRESHOLD) {
+            if (elevatorLeaderVelocity.getValueAsDouble() < LOW_VELOCITY_THRESHOLD) {
                 elevatorLeader.setPosition(0);
             }
         }
@@ -114,6 +137,8 @@ public class Elevator extends SubsystemBase {
 
     @Override
     public void periodic() {
+        detectStallAndReset();
+
         BaseStatusSignal.refreshAll(
             elevatorLeaderPosition, 
             elevatorLeaderVelocity, 

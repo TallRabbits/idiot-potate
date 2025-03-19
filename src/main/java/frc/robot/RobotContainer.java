@@ -68,10 +68,6 @@ public class RobotContainer {
             )
         );
 
-        private void configureBindings() {
-            
-        }
-
         joystick.a().whileTrue(drivetrain.applyRequest(() -> brake));
         joystick.b().whileTrue(drivetrain.applyRequest(() ->
             point.withModuleDirection(new Rotation2d(-joystick.getLeftY(), -joystick.getLeftX()))

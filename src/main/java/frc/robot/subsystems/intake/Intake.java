@@ -22,11 +22,11 @@ public class Intake extends SubsystemBase{
         intakePivot.getConfigurator().apply(IntakeConstants.pivotConfig);
     }
 
-    public void setIntakeRoller(double rps) {
+    public void runIntakeRoller(double rps) {
         intakeRoller.setControl(intakeRollerRequesnt.withVelocity(rps));
     }
 
-    public void setIntakePivot (double angle) {
+    public void runIntakePivot (double angle) {
         intakePivot.setControl(intakePivotRequest.withPosition(angle));
     }
 }

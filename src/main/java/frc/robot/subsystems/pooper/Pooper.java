@@ -64,24 +64,24 @@ public class Pooper extends SubsystemBase {
         pooperPivot.getConfigurator().apply(pooperPivotConfig);
     }
 
-    public void setCoralRoller(double rps) {
+    public void runCoralRoller(double rps) {
         coralRoller.setControl(coralRollerRequest.withVelocity(rps));
     }
 
-    public void setAlgaeRoller(double rps) {
+    public void runAlgaeRoller(double rps) {
         algaeRoller.setControl(algaeRollerRequest.withVelocity(rps));
     }
 
-    public void setPooperPivot(double angle) {
+    public void runPooperPivot(double angle) {
         pooperPivot.setControl(pooperPivotRequest.withPosition(angle));
     }
 
     public void stopCoral() {
-        coralRoller.setControl(coralRollerRequest);
+        coralRoller.setControl(neutral);
     }
 
     public void stopAlgae() {
-        algaeRoller.setControl(algaeRollerRequest);
+        algaeRoller.setControl(neutral);
     }
 
     public boolean hasCoral() {
