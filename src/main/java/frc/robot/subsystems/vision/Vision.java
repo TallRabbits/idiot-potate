@@ -6,7 +6,6 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.LimelightHelpers;
 
 import frc.robot.LimelightHelpers.*;
-import frc.robot.RobotContainer;
 import static frc.robot.Constants.*;
 
 public class Vision extends SubsystemBase {

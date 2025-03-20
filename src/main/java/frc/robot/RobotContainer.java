@@ -22,6 +22,7 @@ import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.pooper.Pooper;
 import frc.robot.subsystems.pooper.Pooper.*;
+import frc.robot.subsystems.elevator.Elevator;
 import frc.robot.subsystems.elevator.Elevator.*;
 import frc.robot.subsystems.intake.Intake.*;
 import frc.robot.subsystems.elevator.ElevatorConstants.*;
@@ -43,8 +44,11 @@ public class RobotContainer {
     private final Telemetry logger = new Telemetry(MaxSpeed);
 
     private final CommandXboxController joystick = new CommandXboxController(0);
+    private final CommandXboxController dev = new CommandXboxController(1);
 
     public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
+    public final Elevator elevator = new Elevator();
+    public final Pooper pooper = new Pooper();
 
     /* Path follower */
     private final SendableChooser<Command> autoChooser;
@@ -76,7 +80,7 @@ public class RobotContainer {
         joystick.pov(0).whileTrue(drivetrain.applyRequest(() ->
             forwardStraight.withVelocityX(0.5).withVelocityY(0))
         );
-        joystick.pov(90).whileTrue();
+        // joystick.pov(90).whileTrue();
 
         joystick.pov(180).whileTrue(drivetrain.applyRequest(() ->
             forwardStraight.withVelocityX(-0.5).withVelocityY(0))
@@ -91,6 +95,14 @@ public class RobotContainer {
 
         // reset the field-centric heading on left bumper press
         joystick.leftBumper().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
+
+        // Start developer controls
+        dev.back().and(dev.y()).onTrue(elevator.sysIdDynamic(Direction.kForward));
+        dev.back().and(dev.x()).onTrue(elevator.sysIdDynamic(Direction.kReverse));
+        dev.start().and(dev.y()).onTrue(elevator.sysIdQuasistatic(Direction.kForward));
+        dev.start().and(dev.x()).onTrue(elevator.sysIdQuasistatic(Direction.kReverse));
+
+        //dev.y().whileTrue(() -> elevator.);
 
         drivetrain.registerTelemetry(logger::telemeterize);
     }
