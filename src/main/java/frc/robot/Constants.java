@@ -26,4 +26,16 @@ public class Constants {
 
     /* Supply Current Limit */
     public static final int SUPPLY_CURRENT_LIMIT = 40;
+
+    public static enum RobotStates {
+        L1,
+        L2,
+        L3,
+        L4,
+        DEALGAE_UPPER,
+        DEALGAE_LOWER,
+        BARGE,
+        INTAKE_TRANSFER,
+        CORAL_STATION
+    }
 }

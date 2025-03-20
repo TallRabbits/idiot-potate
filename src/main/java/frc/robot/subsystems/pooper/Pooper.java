@@ -11,6 +11,8 @@ import com.ctre.phoenix6.SignalLogger;
 
 import static edu.wpi.first.units.Units.*;
 
+import edu.wpi.first.math.filter.Debouncer;
+import edu.wpi.first.math.filter.Debouncer.DebounceType;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.measure.Current;
@@ -19,6 +21,9 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import static frc.robot.subsystems.pooper.PooperConstants.*;
+
+import java.util.function.BooleanSupplier;
+
 import static frc.robot.Constants.*;
 
 public class Pooper extends SubsystemBase {
@@ -58,54 +63,44 @@ public class Pooper extends SubsystemBase {
         )
     );
 
+    private final Debouncer m_debouncer = new Debouncer(0.1, DebounceType.kBoth);
+
     public Pooper() {
         coralRoller.getConfigurator().apply(coralConfig);
         algaeRoller.getConfigurator().apply(algaeConfig);
         pooperPivot.getConfigurator().apply(pooperPivotConfig);
     }
 
-    public void setCoralRoller(double rps) {
+    public void runCoralRoller(double rps) {
         coralRoller.setControl(coralRollerRequest.withVelocity(rps));
     }
 
-    public void setAlgaeRoller(double rps) {
+    public void runAlgaeRoller(double rps) {
         algaeRoller.setControl(algaeRollerRequest.withVelocity(rps));
     }
 
-    public void setPooperPivot(double angle) {
+    public void runPooperPivot(double angle) {
         pooperPivot.setControl(pooperPivotRequest.withPosition(angle));
     }
 
     public void stopCoral() {
-        coralRoller.setControl(coralRollerRequest);
+        coralRoller.setControl(neutral);
     }
 
     public void stopAlgae() {
-        algaeRoller.setControl(algaeRollerRequest);
+        algaeRoller.setControl(neutral);
     }
 
-    public boolean hasCoral() {
-        if (coralSensorHasCoral.getValue()) {
-            return true;
-        } else {
-            return false;
-        }
+    public BooleanSupplier hasCoral() {
+        return () -> m_debouncer.calculate(coralSensorHasCoral.getValue());
     }
 
-    public boolean isAlgaeStalled() {
-        if ((algaeMotorStall.getValueAsDouble() < algaeMotorStatorCurrent.getValueAsDouble()) && (algaeRollerVelocity.getValueAsDouble() < 5)) {
-            return true;
-        } else {
-            return false;
-        }
+    public BooleanSupplier isAlgaeStalled() {
+        return () -> m_debouncer.calculate(algaeMotorStall.getValueAsDouble() < algaeMotorStatorCurrent.getValueAsDouble() && (algaeRollerVelocity.getValueAsDouble() < 5));
     }
 
-    public boolean pivotAtTarget() {
-        if (pivotError.getValueAsDouble() < .03) {
-            return true;
-        } else {
-            return false;
-        }
+    public BooleanSupplier pivotAtTarget() {
+        return () -> m_debouncer.calculate(pivotError.getValueAsDouble() < 0.03);
     }
 
     public Command sysIdQuasistatic(SysIdRoutine.Direction direction) {
@@ -118,8 +113,8 @@ public class Pooper extends SubsystemBase {
             
     @Override
     public void periodic() {
-        SmartDashboard.putBoolean("Pooper/Coral Sensor/Has Coral", coralSensorHasCoral.getValue());
-        }
+        SmartDashboard.putBoolean("Pooper/Coral Sensor/Has Coral", this.hasCoral().getAsBoolean());
+    }
 }
 
     

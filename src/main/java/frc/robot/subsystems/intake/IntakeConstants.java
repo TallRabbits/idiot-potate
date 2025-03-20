@@ -25,4 +25,7 @@ public class IntakeConstants {
         pivotConfig.Slot0.kD = 0.0;
     }
     
+    public static final double INTAKE_RETRACT_POS = 0.0;
+    public static final double INTAKE_CLEARANCE_POS = 0.0;
+    public static final double INTAKE_ALGAE_POS = 0.0;
 }
