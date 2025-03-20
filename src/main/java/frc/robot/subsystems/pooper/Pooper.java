@@ -33,9 +33,9 @@ public class Pooper extends SubsystemBase {
 
     private final CANrange coralSensor = new CANrange(0);
 
-    private final VelocityVoltage coralRollerRequest = new VelocityVoltage(null);
-    private final VelocityVoltage algaeRollerRequest = new VelocityVoltage(null);
-    private final MotionMagicVoltage pooperPivotRequest = new MotionMagicVoltage(null);
+    private final VelocityVoltage coralRollerRequest = new VelocityVoltage(0);
+    private final VelocityVoltage algaeRollerRequest = new VelocityVoltage(0);
+    private final MotionMagicVoltage pooperPivotRequest = new MotionMagicVoltage(0);
     private final NeutralOut neutral = new NeutralOut();
     private final VoltageOut sysIdControl = new VoltageOut(0.0);
 
@@ -69,6 +69,7 @@ public class Pooper extends SubsystemBase {
         coralRoller.getConfigurator().apply(coralConfig);
         algaeRoller.getConfigurator().apply(algaeConfig);
         pooperPivot.getConfigurator().apply(pooperPivotConfig);
+        pooperPivot.setControl(neutral);
     }
 
     public void runCoralRoller(double rps) {

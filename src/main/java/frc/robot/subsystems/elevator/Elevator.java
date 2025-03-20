@@ -20,6 +20,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
+import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 
 import static frc.robot.Constants.*;
 import static frc.robot.subsystems.elevator.ElevatorConstants.*;
@@ -72,6 +73,7 @@ public class Elevator extends SubsystemBase {
         elevatorLeader.getConfigurator().apply(currentLimit);
         elevatorLeader.getConfigurator().apply(elevatorConfig);
         elevatorLeader.setPosition(0);
+        elevatorLeader.setControl(neutral);
         elevatorLeaderPosition = elevatorLeader.getPosition();
         elevatorLeaderVelocity = elevatorLeader.getVelocity();
         elevatorLeaderSupplyCurrent = elevatorLeader.getSupplyCurrent();
@@ -118,6 +120,16 @@ public class Elevator extends SubsystemBase {
         return () -> m_debouncer.calculate(this.isElevatorClear().getAsBoolean() && this.willElevatorClear().getAsBoolean());
     }
 
+    public BooleanSupplier isSoftLimitHit(String direction) {
+        if (direction == "forward") {
+            return () -> elevatorLeader.getFault_ForwardSoftLimit().getValue();
+        } else if (direction == "reverse") {
+            return () -> elevatorLeader.getFault_ReverseSoftLimit().getValue();
+        } else {
+            return () -> false; 
+        }
+    }
+
     public void detectStallAndReset() {
         if (elevatorLeaderSupplyCurrent.getValueAsDouble() > HIGH_CURRENT_THRESHOLD) {
             if (elevatorLeaderVelocity.getValueAsDouble() < LOW_VELOCITY_THRESHOLD) {
@@ -135,13 +147,17 @@ public class Elevator extends SubsystemBase {
     }
 
     public Command sysIdDynamic(SysIdRoutine.Direction direction ) { 
-        return sysIdRoutine.dynamic(direction);
+        if (direction == SysIdRoutine.Direction.kForward) {
+            return sysIdRoutine.dynamic(direction).until(this.isSoftLimitHit("forward"));
+        } else if (direction == SysIdRoutine.Direction.kReverse) {
+            return sysIdRoutine.dynamic(direction).until(this.isSoftLimitHit("reverse"));
+        } else {
+            return sysIdRoutine.dynamic(direction);
+        }
     }
 
     @Override
     public void periodic() {
-        detectStallAndReset();
-
         BaseStatusSignal.refreshAll(
             elevatorLeaderPosition, 
             elevatorLeaderVelocity, 

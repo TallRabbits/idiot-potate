@@ -1,6 +1,7 @@
 package frc.robot.subsystems.pooper;
 
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.signals.NeutralModeValue;
 
 public class PooperConstants {
     public static final TalonFXConfiguration coralConfig = new TalonFXConfiguration();
@@ -34,8 +35,9 @@ public static final TalonFXConfiguration algaeConfig = new TalonFXConfiguration(
         pooperPivotConfig.Slot0.kP = 0.0;
         pooperPivotConfig.Slot0.kI = 0.0;
         pooperPivotConfig.Slot0.kD = 0.0;
-        pooperPivotConfig.SoftwareLimitSwitch.ForwardSoftLimitEnable = true;
-        pooperPivotConfig.SoftwareLimitSwitch.ReverseSoftLimitEnable = true;
+        pooperPivotConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake;
+        pooperPivotConfig.SoftwareLimitSwitch.ForwardSoftLimitEnable = false;
+        pooperPivotConfig.SoftwareLimitSwitch.ReverseSoftLimitEnable = false;
         pooperPivotConfig.SoftwareLimitSwitch.ForwardSoftLimitThreshold = 0.0;
         pooperPivotConfig.SoftwareLimitSwitch.ReverseSoftLimitThreshold = 0.0;
     }
