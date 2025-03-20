@@ -33,12 +33,6 @@
   "pointTowardsZones": [],
   "eventMarkers": [
     {
-      "name": "intakeClearElevator",
-      "waypointRelativePos": 0,
-      "endWaypointRelativePos": null,
-      "command": null
-    },
-    {
       "name": "L4",
       "waypointRelativePos": 0.5309336332958445,
       "endWaypointRelativePos": null,
