@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 7.2038006756756765,
+        "x": 7.109744318181819,
         "y": 2.4636824324324325
       },
       "prevControl": null,
       "nextControl": {
-        "x": 7.457310692186244,
-        "y": 2.5060745839818
+        "x": 7.400583669152703,
+        "y": 2.4341487496916305
       },
       "isLocked": false,
       "linkedName": "Watermelon"
@@ -20,8 +20,8 @@
         "y": 2.4636824324324325
       },
       "prevControl": {
-        "x": 5.369204595099665,
-        "y": 2.3294827266691094
+        "x": 4.912523858172623,
+        "y": 2.509566852424615
       },
       "nextControl": null,
       "isLocked": false,
@@ -31,7 +31,32 @@
   "rotationTargets": [],
   "constraintZones": [],
   "pointTowardsZones": [],
-  "eventMarkers": [],
+  "eventMarkers": [
+    {
+      "name": "intakeClearElevator",
+      "waypointRelativePos": 0,
+      "endWaypointRelativePos": null,
+      "command": null
+    },
+    {
+      "name": "L4",
+      "waypointRelativePos": 0.5309336332958445,
+      "endWaypointRelativePos": null,
+      "command": null
+    },
+    {
+      "name": "groundUp",
+      "waypointRelativePos": 0.6456692913385682,
+      "endWaypointRelativePos": null,
+      "command": null
+    },
+    {
+      "name": "spitCoral",
+      "waypointRelativePos": 1.0,
+      "endWaypointRelativePos": null,
+      "command": null
+    }
+  ],
   "globalConstraints": {
     "maxVelocity": 3.0,
     "maxAcceleration": 3.0,
@@ -48,7 +73,7 @@
   "folder": "Watermelon",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 0.0
+    "rotation": 179.92165157298788
   },
   "useDefaultConstraints": true
 }

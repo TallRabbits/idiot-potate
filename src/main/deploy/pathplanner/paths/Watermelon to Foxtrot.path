@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 7.2038006756756765,
+        "x": 7.109744318181819,
         "y": 2.4636824324324325
       },
       "prevControl": null,
       "nextControl": {
-        "x": 5.7153562326286815,
-        "y": 3.2388791504983256
+        "x": 6.144023751977605,
+        "y": 2.575449086795626
       },
       "isLocked": false,
       "linkedName": "Watermelon"
@@ -20,12 +20,12 @@
         "y": 2.6514358108108103
       },
       "prevControl": {
-        "x": 6.379817778890928,
-        "y": 2.613317703710735
+        "x": 5.86364444240917,
+        "y": 2.6022894162630195
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "Foxtrot"
+      "linkedName": null
     }
   ],
   "rotationTargets": [],
@@ -48,7 +48,7 @@
   "folder": "Watermelon",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 0.0
+    "rotation": 179.92165157298788
   },
   "useDefaultConstraints": true
 }
