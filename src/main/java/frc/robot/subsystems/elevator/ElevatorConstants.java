@@ -18,11 +18,11 @@ public class ElevatorConstants {
 
     public static final TalonFXConfiguration elevatorConfig = new TalonFXConfiguration();
     static {
-        elevatorConfig.Slot0.kG = 0.0;
-        elevatorConfig.Slot0.kS = 0.0;
+        elevatorConfig.Slot0.kG = 0.55;
+        elevatorConfig.Slot0.kS = 0.325;
         elevatorConfig.Slot0.kV = 0.72;
         elevatorConfig.Slot0.kA = 0.0;
-        elevatorConfig.Slot0.kP = 0.0;
+        elevatorConfig.Slot0.kP = 185;
         elevatorConfig.Slot0.kI = 0.0;
         elevatorConfig.Slot0.kD = 0.0;
         elevatorConfig.Slot0.GravityType = GravityTypeValue.Elevator_Static;
@@ -32,7 +32,7 @@ public class ElevatorConstants {
         elevatorConfig.Feedback.SensorToMechanismRatio = 6;
         elevatorConfig.SoftwareLimitSwitch.ForwardSoftLimitEnable = false;
         elevatorConfig.SoftwareLimitSwitch.ReverseSoftLimitEnable = false;
-        elevatorConfig.SoftwareLimitSwitch.ForwardSoftLimitThreshold = 56.5;
+        elevatorConfig.SoftwareLimitSwitch.ForwardSoftLimitThreshold = 4.0;
         elevatorConfig.SoftwareLimitSwitch.ReverseSoftLimitThreshold = 0.0;
     }
 
@@ -42,8 +42,8 @@ public class ElevatorConstants {
     public static final double ELEVATOR_INTAKE_UPPER_DANGER_POS = 0.0;
 
     public static final double ELEVATOR_L1_POS = 0.0;
-    public static final double ELEVATOR_L2_POS = 0.0;
-    public static final double ELEVATOR_L3_POS = 0.0;
+    public static final double ELEVATOR_L2_POS = 1.27;
+    public static final double ELEVATOR_L3_POS = 2.1;
     public static final double ELEVATOR_L4_POS = 0.0;
 
     public static final double ELEVATOR_DEALGAE_UPPER_POS = 0.0;

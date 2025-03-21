@@ -1,5 +1,6 @@
 package frc.robot.subsystems.pooper;
 
+import com.ctre.phoenix6.configs.CANrangeConfiguration;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
@@ -40,6 +41,13 @@ public static final TalonFXConfiguration algaeConfig = new TalonFXConfiguration(
         pooperPivotConfig.SoftwareLimitSwitch.ReverseSoftLimitEnable = false;
         pooperPivotConfig.SoftwareLimitSwitch.ForwardSoftLimitThreshold = 0.0;
         pooperPivotConfig.SoftwareLimitSwitch.ReverseSoftLimitThreshold = 0.0;
+    }
+
+    public static final CANrangeConfiguration coralSensorConfig = new CANrangeConfiguration();
+    static {
+        coralSensorConfig.ProximityParams.MinSignalStrengthForValidMeasurement = 4000;
+        coralSensorConfig.ProximityParams.ProximityHysteresis = .01;
+        coralSensorConfig.ProximityParams.ProximityThreshold = .15;
     }
 
     public static final double CORAL_SCORING_VELOCITY = 0.0;
