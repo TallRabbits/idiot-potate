@@ -12,19 +12,20 @@ import static frc.robot.subsystems.intake.IntakeConstants.*;
 
 public class RobotToState extends SequentialCommandGroup {
 
-    public RobotToState(Elevator elevator, Pooper pooper, Intake intake, RobotStates state) {
+    public RobotToState(Elevator elevator, Pooper pooper, RobotStates state) {
         addCommands(
-            new ConditionalCommand(
-                new ElevatorToHeight(elevator, state).alongWith(new PooperToAngle(pooper, state)),
+            new ElevatorToHeight(elevator, state).alongWith(new PooperToAngle(pooper, state))
+            // new ConditionalCommand(
+            //     new ElevatorToHeight(elevator, state).alongWith(new PooperToAngle(pooper, state)),
 
-                new InstantCommand(() -> intake.runIntakePivot(INTAKE_CLEARANCE_POS))
-                .until(intake.pivotAtTarget())
-                .andThen(new ElevatorToHeight(elevator, state)
-                .until(elevator.isMovementSafe())
-                .andThen(new InstantCommand(() -> intake.runIntakePivot(INTAKE_RETRACT_POS)))),
+            //     new InstantCommand(() -> intake.runIntakePivot(INTAKE_CLEARANCE_POS))
+            //     .until(intake.pivotAtTarget())
+            //     .andThen(new ElevatorToHeight(elevator, state)
+            //     .until(elevator.isMovementSafe())
+            //     .andThen(new InstantCommand(() -> intake.runIntakePivot(INTAKE_RETRACT_POS)))),
 
-                elevator.isMovementSafe()
-            )
+            //     elevator.isMovementSafe()
+            // )
         );
     }
 }

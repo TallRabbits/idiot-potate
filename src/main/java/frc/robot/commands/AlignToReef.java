@@ -42,8 +42,8 @@ public class AlignToReef extends Command {
     m_invalidTagTimer.start();
     m_alignedDebounceTimer.start();
 
-    m_xController.setSetpoint(m_isRightPipe ? 0.5 : -0.5);
-    m_yController.setSetpoint(0);
+    m_xController.setSetpoint(m_isRightPipe ? 13 : -29);
+    m_yController.setSetpoint(-8.25);
     m_rotController.setSetpoint(0);
 
     m_xController.setTolerance(0.1);
@@ -59,18 +59,12 @@ public class AlignToReef extends Command {
     if (LimelightHelpers.getTV("limelight-swerve") && LimelightHelpers.getFiducialID("limelight-swerve") == tagID) {
       m_invalidTagTimer.reset();
 
-      double[] tPose = LimelightHelpers.getBotPose_TargetSpace("limeight-swerve");
-
-      double velocityX = m_xController.calculate(tPose[2]);
-      double velocityY = m_yController.calculate(tPose[0]);
-      double velocityRot = m_rotController.calculate(tPose[4]);
-
-      m_drivetrain.setControl(new SwerveRequest.RobotCentric().withVelocityX(velocityX).withVelocityX(velocityY).withRotationalRate(velocityRot));
+      double velocityX = m_xController.calculate(LimelightHelpers.getTX("limelight-swerve"));
+      double velocityY = m_yController.calculate(LimelightHelpers.getTY("limelight-swerve"));
+      m_drivetrain.setControl(new SwerveRequest.RobotCentric().withVelocityX(velocityX).withVelocityX(velocityY));
 
       SmartDashboard.putNumber("X Speed", velocityX);
       SmartDashboard.putNumber("Y Speed", velocityY);
-      SmartDashboard.putNumber("Rot Speed", velocityRot);
-      SmartDashboard.putNumberArray("Target Pose", tPose);
       SmartDashboard.putNumber("Target ID", tagID);
 
       if (!m_xController.atSetpoint() || !m_yController.atSetpoint() || !m_rotController.atSetpoint()) {
