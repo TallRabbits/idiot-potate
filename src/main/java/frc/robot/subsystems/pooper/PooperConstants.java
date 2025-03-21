@@ -46,8 +46,8 @@ public static final TalonFXConfiguration algaeConfig = new TalonFXConfiguration(
     public static final CANrangeConfiguration coralSensorConfig = new CANrangeConfiguration();
     static {
         coralSensorConfig.ProximityParams.MinSignalStrengthForValidMeasurement = 4000;
-        coralSensorConfig.ProximityParams.ProximityHysteresis = .01;
-        coralSensorConfig.ProximityParams.ProximityThreshold = .15;
+        coralSensorConfig.ProximityParams.ProximityHysteresis = 0.01;
+        coralSensorConfig.ProximityParams.ProximityThreshold = 0.15;
     }
 
     public static final double CORAL_SCORING_VELOCITY = 0.0;
