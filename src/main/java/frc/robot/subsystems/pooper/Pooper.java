@@ -96,15 +96,15 @@ public class Pooper extends SubsystemBase {
     }
 
     public BooleanSupplier hasCoral() {
-        return () -> coralSensor.getIsDetected().getValue();
+        return () -> m_debouncer.calculate(coralSensorHasCoral.refresh().getValue());
     }
 
     public BooleanSupplier isAlgaeStalled() {
-        return () -> m_debouncer.calculate(algaeMotorStall.getValueAsDouble() < algaeMotorStatorCurrent.getValueAsDouble() && (algaeRollerVelocity.getValueAsDouble() < 5));
+        return () -> m_debouncer.calculate(algaeMotorStall.refresh().getValueAsDouble() < algaeMotorStatorCurrent.refresh().getValueAsDouble() && (algaeRollerVelocity.refresh().getValueAsDouble() < 5));
     }
 
     public BooleanSupplier pivotAtTarget() {
-        return () -> m_debouncer.calculate(pivotError.getValueAsDouble() < 0.03);
+        return () -> m_debouncer.calculate(pivotError.refresh().getValueAsDouble() < 0.03);
     }
 
     public Command sysIdQuasistatic(SysIdRoutine.Direction direction) {
