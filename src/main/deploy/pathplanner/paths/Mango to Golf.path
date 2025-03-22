@@ -3,29 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 7.109744318181819,
-        "y": 2.4636824324324325
+        "x": 7.55846590909091,
+        "y": 3.8804119318181813
       },
       "prevControl": null,
       "nextControl": {
-        "x": 7.400583669152703,
-        "y": 2.4341487496916305
+        "x": 7.06538349215748,
+        "y": 3.90121358486541
       },
       "isLocked": false,
-      "linkedName": "Watermelon"
+      "linkedName": "Mango"
     },
     {
       "anchor": {
-        "x": 5.158277027027027,
-        "y": 2.4636824324324325
+        "x": 6.192357954550439,
+        "y": 3.8804119318181813
       },
       "prevControl": {
-        "x": 4.912523858172623,
-        "y": 2.509566852424615
+        "x": 5.942431633254724,
+        "y": 3.874342836037831
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "Echo"
+      "linkedName": "golf"
     }
   ],
   "rotationTargets": [],
@@ -33,20 +33,8 @@
   "pointTowardsZones": [],
   "eventMarkers": [
     {
-      "name": "L4",
-      "waypointRelativePos": 0.5309336332958445,
-      "endWaypointRelativePos": null,
-      "command": null
-    },
-    {
       "name": "",
-      "waypointRelativePos": 0.6456692913385682,
-      "endWaypointRelativePos": null,
-      "command": null
-    },
-    {
-      "name": "spitCoral",
-      "waypointRelativePos": 1.0,
+      "waypointRelativePos": 0,
       "endWaypointRelativePos": null,
       "command": null
     }
@@ -61,13 +49,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 119.1676133795778
+    "rotation": -179.3634064243549
   },
   "reversed": false,
-  "folder": "Watermelon",
+  "folder": "Mango",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 179.92165157298788
+    "rotation": 179.6180337950787
   },
   "useDefaultConstraints": true
 }

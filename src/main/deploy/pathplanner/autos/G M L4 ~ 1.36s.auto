@@ -7,13 +7,26 @@
         {
           "type": "path",
           "data": {
-            "pathName": "SimplePath"
+            "pathName": "Mango to Golf"
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "L4"
+                }
+              }
+            ]
           }
         },
         {
           "type": "named",
           "data": {
-            "name": null
+            "name": "spitCoral"
           }
         }
       ]
