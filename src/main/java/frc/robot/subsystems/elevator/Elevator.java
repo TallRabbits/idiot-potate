@@ -122,9 +122,9 @@ public class Elevator extends SubsystemBase {
 
     public BooleanSupplier isSoftLimitHit(String direction) {
         if (direction == "forward") {
-            return () -> elevatorLeader.getFault_ForwardSoftLimit().getValue();
+            return () -> elevatorLeader.getFault_ForwardSoftLimit().refresh().getValue();
         } else if (direction == "reverse") {
-            return () -> elevatorLeader.getFault_ReverseSoftLimit().getValue();
+            return () -> elevatorLeader.getFault_ReverseSoftLimit().refresh().getValue();
         } else {
             return () -> false; 
         }

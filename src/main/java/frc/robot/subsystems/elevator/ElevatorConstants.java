@@ -26,12 +26,12 @@ public class ElevatorConstants {
         elevatorConfig.Slot0.kI = 0.0;
         elevatorConfig.Slot0.kD = 0.0;
         elevatorConfig.Slot0.GravityType = GravityTypeValue.Elevator_Static;
-        elevatorConfig.MotionMagic.MotionMagicAcceleration = 2.5;
-        elevatorConfig.MotionMagic.MotionMagicCruiseVelocity = 1;
+        elevatorConfig.MotionMagic.MotionMagicAcceleration = 3.5;
+        elevatorConfig.MotionMagic.MotionMagicCruiseVelocity = 2;
         elevatorConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake;
         elevatorConfig.Feedback.SensorToMechanismRatio = 6;
         elevatorConfig.SoftwareLimitSwitch.ForwardSoftLimitEnable = false;
-        elevatorConfig.SoftwareLimitSwitch.ReverseSoftLimitEnable = false;
+        elevatorConfig.SoftwareLimitSwitch.ReverseSoftLimitEnable = true;
         elevatorConfig.SoftwareLimitSwitch.ForwardSoftLimitThreshold = 4.0;
         elevatorConfig.SoftwareLimitSwitch.ReverseSoftLimitThreshold = 0.0;
     }
@@ -51,7 +51,7 @@ public class ElevatorConstants {
 
     public static final double ELEVATOR_BARGE_POS = 0.0;
 
-    public static final double ELEVATOR_CORAL_STATION_POS = 0.0;
+    public static final double ELEVATOR_CORAL_STATION_POS = 1.1;
 
 
 
