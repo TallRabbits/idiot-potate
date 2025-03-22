@@ -42,8 +42,8 @@ public class AlignToReef extends Command {
     m_invalidTagTimer.start();
     m_alignedDebounceTimer.start();
 
-    m_xController.setSetpoint(m_isRightPipe ? 13 : -29);
-    m_yController.setSetpoint(-8.25);
+    m_xController.setSetpoint(m_isRightPipe ? 13 : -6.83);
+    m_yController.setSetpoint(-11);
     m_rotController.setSetpoint(0);
 
     m_xController.setTolerance(0.1);
@@ -61,7 +61,7 @@ public class AlignToReef extends Command {
 
       double velocityX = m_xController.calculate(LimelightHelpers.getTX("limelight-swerve"));
       double velocityY = m_yController.calculate(LimelightHelpers.getTY("limelight-swerve"));
-      m_drivetrain.setControl(new SwerveRequest.RobotCentric().withVelocityX(velocityX).withVelocityX(velocityY));
+      m_drivetrain.setControl(new SwerveRequest.RobotCentric().withVelocityX(velocityX).withVelocityY(velocityY));
 
       SmartDashboard.putNumber("X Speed", velocityX);
       SmartDashboard.putNumber("Y Speed", velocityY);

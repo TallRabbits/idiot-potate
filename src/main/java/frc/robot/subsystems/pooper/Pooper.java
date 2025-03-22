@@ -31,7 +31,7 @@ public class Pooper extends SubsystemBase {
     private final TalonFX algaeRoller = new TalonFX(ALGAE_ROLLER_ID);
     private final TalonFX pooperPivot = new TalonFX(POOPER_PIVOT_ID);
 
-    private final CANrange coralSensor = new CANrange(0);
+    private final CANrange coralSensor = new CANrange(32);
 
     private final VoltageOut coralRollerRequest = new VoltageOut(0);
     private final VelocityVoltage algaeRollerRequest = new VelocityVoltage(0);
@@ -96,7 +96,7 @@ public class Pooper extends SubsystemBase {
     }
 
     public BooleanSupplier hasCoral() {
-        return () -> m_debouncer.calculate(coralSensorHasCoral.refresh().getValue());
+        return () -> coralSensorHasCoral.refresh().getValue();
     }
 
     public BooleanSupplier isAlgaeStalled() {

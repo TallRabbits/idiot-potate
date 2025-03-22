@@ -20,6 +20,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.Constants.RobotStates;
 import frc.robot.commands.AlignToReef;
+import frc.robot.commands.AlignToReefLL;
 import frc.robot.commands.RobotToState;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
@@ -32,11 +33,14 @@ import frc.robot.subsystems.elevator.ElevatorConstants.*;
 import frc.robot.subsystems.pooper.PooperConstants.*;
 
 public class RobotContainer {
-    private double MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond)/2; // kSpeedAt12Volts desired top speed
+    private double MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
     private double MaxAngularRate = RotationsPerSecond.of(0.75).in(RadiansPerSecond); // 3/4 of a rotation per second max angular velocity
 
     /* Setting up bindings for necessary control of the swerve drive platform */
     private final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
+            .withDeadband(MaxSpeed * 0.1).withRotationalDeadband(MaxAngularRate * 0.1) // Add a 10% deadband
+            .withDriveRequestType(DriveRequestType.OpenLoopVoltage); // Use open-loop control for drive motors
+    private final SwerveRequest.RobotCentric driveRobotCentric = new SwerveRequest.RobotCentric()
             .withDeadband(MaxSpeed * 0.1).withRotationalDeadband(MaxAngularRate * 0.1) // Add a 10% deadband
             .withDriveRequestType(DriveRequestType.OpenLoopVoltage); // Use open-loop control for drive motors
     private final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
@@ -71,14 +75,14 @@ public class RobotContainer {
             // Drivetrain will execute this command periodically
             drivetrain.applyRequest(() ->
                 drive.withVelocityX(-joystick.getLeftY() * MaxSpeed) // Drive forward with negative Y (forward)
-                    .withVelocityY(new SlewRateLimiter(0.3).calculate(-joystick.getLeftX() * MaxSpeed)) // Drive left with negative X (left)
+                    .withVelocityY(-joystick.getLeftX() * MaxSpeed) // Drive left with negative X (left)
                     .withRotationalRate(-joystick.getRightX() * MaxAngularRate) // Drive counterclockwise with negative X (left)
             )
         );
 
         joystick.rightBumper().whileTrue(
             drivetrain.applyRequest(() ->
-                drive.withVelocityX(-joystick.getLeftY() * MaxSpeed/4) // Drive forward with negative Y (forward)
+                driveRobotCentric.withVelocityX(-joystick.getLeftY() * MaxSpeed/4) // Drive forward with negative Y (forward)
                     .withVelocityY(-joystick.getLeftX() * MaxSpeed/4) // Drive left with negative X (left)
                     .withRotationalRate(-joystick.getRightX() * MaxAngularRate) // Drive counterclockwise with negative X (left)
             )
@@ -97,7 +101,7 @@ public class RobotContainer {
             forwardStraight.withVelocityX(-0.5).withVelocityY(0))
         );
 
-        joystick.rightTrigger(0.25)
+        joystick.rightTrigger(0.5)
             .whileTrue(new RobotToState(elevator, pooper, RobotStates.CORAL_STATION)
             .alongWith(pooper.runOnce(() -> pooper.runCoralRoller()))
             .until(pooper.hasCoral())
@@ -120,7 +124,7 @@ public class RobotContainer {
         dev.back().and(dev.x()).onTrue(elevator.sysIdDynamic(Direction.kReverse));
         dev.start().and(dev.y()).onTrue(elevator.sysIdQuasistatic(Direction.kForward));
         dev.start().and(dev.x()).onTrue(elevator.sysIdQuasistatic(Direction.kReverse));
-        dev.a().whileTrue(new AlignToReef(false, drivetrain));
+        dev.a().whileTrue(new AlignToReefLL(drivetrain));
         dev.b().whileTrue(new AlignToReef(true, drivetrain));
 
         drivetrain.registerTelemetry(logger::telemeterize);
