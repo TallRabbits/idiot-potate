@@ -57,12 +57,12 @@ public static final TalonFXConfiguration algaeConfig = new TalonFXConfiguration(
 
     public static final double PIVOT_INTAKE_TRANSFER_POS = -1.0;
 
-    public static final double PIVOT_SCORING_POS_L1_3 = 0.0;
-    public static final double PIVOT_SCORING_POS_L4 = 0.0;
+    public static final double PIVOT_SCORING_POS_L1_3 = 4.5;
+    public static final double PIVOT_SCORING_POS_L4 = 1.3;
 
     public static final double PIVOT_SCORING_POS_BARGE = 0.0;
 
     public static final double PIVOT_DEALGAE_POS = 0.0;
 
-    public static final double PIVOT_CORAL_STATION_POS = 0.0;
+    public static final double PIVOT_CORAL_STATION_POS = 0.5;
 }
