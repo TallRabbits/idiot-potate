@@ -21,6 +21,7 @@ import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.Constants.RobotStates;
 import frc.robot.commands.AlignToReef;
 import frc.robot.commands.AlignToReefLL;
+import frc.robot.commands.IntakeCoral;
 import frc.robot.commands.RobotToState;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
@@ -80,34 +81,65 @@ public class RobotContainer {
             )
         );
 
-        joystick.rightBumper().whileTrue(
-            drivetrain.applyRequest(() ->
-                driveRobotCentric.withVelocityX(-joystick.getLeftY() * MaxSpeed/4) // Drive forward with negative Y (forward)
-                    .withVelocityY(-joystick.getLeftX() * MaxSpeed/4) // Drive left with negative X (left)
-                    .withRotationalRate(-joystick.getRightX() * MaxAngularRate) // Drive counterclockwise with negative X (left)
-            )
-        );
+        // joystick.rightBumper().whileTrue(
+        //     drivetrain.applyRequest(() ->
+        //         driveRobotCentric.withVelocityX(-joystick.getLeftY() * MaxSpeed/4) // Drive forward with negative Y (forward)
+        //             .withVelocityY(-joystick.getLeftX() * MaxSpeed/4) // Drive left with negative X (left)
+        //             .withRotationalRate(-joystick.getRightX() * MaxAngularRate) // Drive counterclockwise with negative X (left)
+        //     )
+        // );
 
-        joystick.a().whileTrue(drivetrain.applyRequest(() -> brake));
-        joystick.b().whileTrue(drivetrain.applyRequest(() ->
-            point.withModuleDirection(new Rotation2d(-joystick.getLeftY(), -joystick.getLeftX()))
-        ));
+        // joystick.a().whileTrue(drivetrain.applyRequest(() -> brake));
+        // joystick.b().whileTrue(drivetrain.applyRequest(() ->
+        //     point.withModuleDirection(new Rotation2d(-joystick.getLeftY(), -joystick.getLeftX()))
+        // ));
 
-        joystick.pov(0).whileTrue(drivetrain.applyRequest(() ->
-            forwardStraight.withVelocityX(0.5).withVelocityY(0))
-        );
+        // joystick.pov(0).whileTrue(drivetrain.applyRequest(() ->
+        //     forwardStraight.withVelocityX(0.5).withVelocityY(0))
+        // );
 
-        joystick.pov(180).whileTrue(drivetrain.applyRequest(() ->
-            forwardStraight.withVelocityX(-0.5).withVelocityY(0))
-        );
+        // joystick.pov(180).whileTrue(drivetrain.applyRequest(() ->
+        //     forwardStraight.withVelocityX(-0.5).withVelocityY(0))
+        // );
 
+        // CORAL INTAKE AND SCORING //
         joystick.rightTrigger(0.5)
             .whileTrue(new RobotToState(elevator, pooper, RobotStates.CORAL_STATION)
-            .alongWith(pooper.runOnce(() -> pooper.runCoralRoller()))
-            .until(pooper.hasCoral())
-            .andThen(pooper.runOnce(() -> pooper.stopCoral()))
+            .alongWith(new IntakeCoral(pooper))
+            .andThen(new RobotToState(elevator, pooper, RobotStates.CORAL_STATION))
         );
-        
+
+        joystick.povUp()
+            .whileTrue(new RobotToState(elevator, pooper, RobotStates.L4)
+            .alongWith(new AlignToReef(false, drivetrain))
+        );
+
+        joystick.povRight()
+            .whileTrue(new RobotToState(elevator, pooper, RobotStates.L3)
+            .alongWith(new AlignToReef(false, drivetrain))
+        );
+
+        joystick.povLeft()
+            .whileTrue(new RobotToState(elevator, pooper, RobotStates.L2)
+            .alongWith(new AlignToReef(false, drivetrain))
+        );
+
+        joystick.povDown()
+            .whileTrue(new RobotToState(elevator, pooper, RobotStates.L1)
+            .alongWith(new AlignToReef(false, drivetrain))
+        );
+
+        joystick.a()
+            .whileTrue(new RobotToState(elevator, pooper, RobotStates.PROCESSOR)
+        );
+
+        joystick.leftTrigger(0.5)
+            .whileTrue(new RobotToState(elevator, pooper, RobotStates.DEALGAE_UPPER)
+        );
+
+        joystick.leftBumper()
+            .whileTrue(new RobotToState(elevator, pooper, RobotStates.BARGE)
+        );
 
         // Run SysId routines when holding back/start and X/Y.
         // Note that each routine should be run exactly once in a single log.
@@ -120,10 +152,6 @@ public class RobotContainer {
         joystick.leftBumper().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
 
         // Start developer controls
-        dev.back().and(dev.y()).onTrue(elevator.sysIdDynamic(Direction.kForward));
-        dev.back().and(dev.x()).onTrue(elevator.sysIdDynamic(Direction.kReverse));
-        dev.start().and(dev.y()).onTrue(elevator.sysIdQuasistatic(Direction.kForward));
-        dev.start().and(dev.x()).onTrue(elevator.sysIdQuasistatic(Direction.kReverse));
         dev.a().whileTrue(new AlignToReefLL(drivetrain));
         dev.b().whileTrue(new AlignToReef(true, drivetrain));
 

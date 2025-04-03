@@ -23,9 +23,6 @@ public class PooperToAngle extends Command {
   @Override
   public void initialize() {
     switch (m_angle) {
-      case INTAKE_TRANSFER:
-        m_pooper.runPooperPivot(PIVOT_INTAKE_TRANSFER_POS);
-        break;
       case L1:
       case L2:
       case L3:

@@ -5,10 +5,13 @@
 package frc.robot.commands;
 
 import com.ctre.phoenix6.swerve.SwerveRequest;
-import com.ctre.phoenix6.swerve.SwerveRequest.RobotCentric;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.LimelightHelpers;
@@ -16,13 +19,13 @@ import frc.robot.subsystems.CommandSwerveDrivetrain;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
 public class AlignToReef extends Command {
-  private final PIDController m_xController = new PIDController(5, 0, 0);
-  private final PIDController m_yController = new PIDController(5, 0, 0);
-  private final PIDController m_rotController = new PIDController(5, 0, 0);
+  private final PIDController m_xController = new PIDController(1, 0, 0);
+  private final PIDController m_yController = new PIDController(1, 0, 0);
+  private final PIDController m_rotController = new PIDController(0.1, 0, 0);
 
   private final boolean m_isRightPipe;
   private final CommandSwerveDrivetrain m_drivetrain;
-
+  private final SwerveRequest.RobotCentric m_driveRequest = new SwerveRequest.RobotCentric();
   private final Timer m_invalidTagTimer = new Timer();
   private final Timer m_alignedDebounceTimer = new Timer();
 
@@ -42,12 +45,13 @@ public class AlignToReef extends Command {
     m_invalidTagTimer.start();
     m_alignedDebounceTimer.start();
 
-    m_xController.setSetpoint(m_isRightPipe ? 13 : -6.83);
-    m_yController.setSetpoint(-11);
-    m_rotController.setSetpoint(0);
+    m_xController.setSetpoint(m_isRightPipe ? -0.34 : 0.34);
+    m_xController.setTolerance(0.03);
 
-    m_xController.setTolerance(0.1);
-    m_yController.setTolerance(0.1);
+    m_yController.setSetpoint(0.16);
+    m_yController.setTolerance(0.03);
+
+    m_rotController.setSetpoint(0);
     m_rotController.setTolerance(1);
 
     tagID = LimelightHelpers.getFiducialID("limelight-swerve");
@@ -59,26 +63,36 @@ public class AlignToReef extends Command {
     if (LimelightHelpers.getTV("limelight-swerve") && LimelightHelpers.getFiducialID("limelight-swerve") == tagID) {
       m_invalidTagTimer.reset();
 
-      double velocityX = m_xController.calculate(LimelightHelpers.getTX("limelight-swerve"));
-      double velocityY = m_yController.calculate(LimelightHelpers.getTY("limelight-swerve"));
-      m_drivetrain.setControl(new SwerveRequest.RobotCentric().withVelocityX(velocityX).withVelocityY(velocityY));
+      double[] botPose = LimelightHelpers.getBotPose_TargetSpace("limelight-swerve");
+      Pose3d botPose3d = LimelightHelpers.toPose3D(botPose);
+
+      double velocityX = m_xController.calculate(botPose3d.getX());
+      double velocityY = m_yController.calculate(botPose3d.getZ());
+      double velocityRot = m_rotController.calculate(botPose3d.getRotation().getZ());
+      m_drivetrain.setControl(m_driveRequest.withVelocityX(velocityX).withVelocityY(velocityY).withRotationalRate(velocityRot));
 
       SmartDashboard.putNumber("X Speed", velocityX);
       SmartDashboard.putNumber("Y Speed", velocityY);
+      SmartDashboard.putNumber("Rot Speed", velocityRot);
+
       SmartDashboard.putNumber("Target ID", tagID);
+
+      Field2d field = new Field2d();
+      SmartDashboard.putData("Pose", field);
+      field.setRobotPose(botPose3d.toPose2d());
 
       if (!m_xController.atSetpoint() || !m_yController.atSetpoint() || !m_rotController.atSetpoint()) {
         m_alignedDebounceTimer.reset();
       }
     } else {
-      m_drivetrain.setControl(new RobotCentric().withVelocityX(0).withVelocityY(0).withRotationalRate(0));
+      m_drivetrain.setControl(m_driveRequest);
     }
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_drivetrain.setControl(new RobotCentric().withVelocityX(0).withVelocityY(0).withRotationalRate(0));
+    m_drivetrain.setControl(m_driveRequest);
   }
 
   // Returns true when the command should end.

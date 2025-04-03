@@ -34,7 +34,7 @@ public class Constants {
         DEALGAE_UPPER,
         DEALGAE_LOWER,
         BARGE,
-        INTAKE_TRANSFER,
+        PROCESSOR,
         CORAL_STATION
     }
 }

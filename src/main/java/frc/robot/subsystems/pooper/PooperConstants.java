@@ -36,7 +36,7 @@ public static final TalonFXConfiguration algaeConfig = new TalonFXConfiguration(
         pooperPivotConfig.Slot0.kP = 55.0;
         pooperPivotConfig.Slot0.kI = 0.0;
         pooperPivotConfig.Slot0.kD = 0.0;
-        pooperPivotConfig.MotionMagic.MotionMagicAcceleration = 150;
+        pooperPivotConfig.MotionMagic.MotionMagicAcceleration = 85;
         pooperPivotConfig.MotionMagic.MotionMagicCruiseVelocity = 20;
         pooperPivotConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake;
         pooperPivotConfig.SoftwareLimitSwitch.ForwardSoftLimitEnable = false;
@@ -52,8 +52,8 @@ public static final TalonFXConfiguration algaeConfig = new TalonFXConfiguration(
         coralSensorConfig.ProximityParams.ProximityThreshold = 0.15;
     }
 
-    public static final double CORAL_SCORING_VELOCITY = 0.0;
-    public static final double CORAL_INTAKE_VELOCITY = 0.0;
+    public static final double CORAL_SCORING_VOLTS = 0.0;
+    public static final double CORAL_INTAKE_VOLTS = 0.0;
 
     public static final double PIVOT_INTAKE_TRANSFER_POS = 0.0;
 

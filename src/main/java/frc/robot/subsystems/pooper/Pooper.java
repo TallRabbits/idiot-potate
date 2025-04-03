@@ -76,7 +76,8 @@ public class Pooper extends SubsystemBase {
     }
 
     public void runCoralRoller() {
-        coralRoller.setControl(coralRollerRequest.withOutput(1.5));
+        coralRoller.setControl(coralRollerRequest.withOutput(1.1
+        ));
     }
 
     public void runAlgaeRoller(double rps) {

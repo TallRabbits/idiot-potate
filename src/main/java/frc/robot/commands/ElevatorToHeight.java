@@ -24,9 +24,6 @@ public class ElevatorToHeight extends Command {
   @Override
   public void initialize() {
     switch (m_height) {
-      case INTAKE_TRANSFER:
-        m_elevator.elevatorToPosition(ELEVATOR_INTAKE_TRANSFER_POS);
-        break;
       case L1:
         m_elevator.elevatorToPosition(ELEVATOR_L1_POS);
         break;
