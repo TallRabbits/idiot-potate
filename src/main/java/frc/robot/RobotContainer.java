@@ -11,8 +11,6 @@ import com.ctre.phoenix6.swerve.SwerveRequest;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 
-import edu.wpi.first.math.filter.SlewRateLimiter;
-import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -20,18 +18,14 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.Constants.RobotStates;
 import frc.robot.commands.AlignToReef;
-import frc.robot.commands.AlignToReefLL;
 import frc.robot.commands.IntakeCoral;
 import frc.robot.commands.RobotToState;
+import frc.robot.commands.ScoreCoral;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.pooper.Pooper;
-import frc.robot.subsystems.pooper.Pooper.*;
 import frc.robot.subsystems.elevator.Elevator;
-import frc.robot.subsystems.elevator.Elevator.*;
-import frc.robot.subsystems.intake.Intake.*;
-import frc.robot.subsystems.elevator.ElevatorConstants.*;
-import frc.robot.subsystems.pooper.PooperConstants.*;
+
 
 public class RobotContainer {
     private double MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
@@ -106,27 +100,30 @@ public class RobotContainer {
         joystick.rightTrigger(0.5)
             .whileTrue(new RobotToState(elevator, pooper, RobotStates.CORAL_STATION)
             .alongWith(new IntakeCoral(pooper))
-            .andThen(new RobotToState(elevator, pooper, RobotStates.CORAL_STATION))
         );
 
         joystick.povUp()
             .whileTrue(new RobotToState(elevator, pooper, RobotStates.L4)
-            .alongWith(new AlignToReef(false, drivetrain))
+            //.alongWith(new AlignToReef(false, drivetrain))
         );
 
         joystick.povRight()
             .whileTrue(new RobotToState(elevator, pooper, RobotStates.L3)
-            .alongWith(new AlignToReef(false, drivetrain))
+            //.alongWith(new AlignToReef(false, drivetrain))
         );
 
         joystick.povLeft()
             .whileTrue(new RobotToState(elevator, pooper, RobotStates.L2)
-            .alongWith(new AlignToReef(false, drivetrain))
+            //.alongWith(new AlignToReef(false, drivetrain))
         );
 
         joystick.povDown()
             .whileTrue(new RobotToState(elevator, pooper, RobotStates.L1)
-            .alongWith(new AlignToReef(false, drivetrain))
+            //.alongWith(new AlignToReef(false, drivetrain))
+        );
+
+        joystick.x()
+            .whileTrue(new ScoreCoral(elevator, pooper)
         );
 
         joystick.a()
@@ -151,9 +148,8 @@ public class RobotContainer {
         // reset the field-centric heading on left bumper press
         joystick.leftBumper().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
 
-        // Start developer controls
-        dev.a().whileTrue(new AlignToReefLL(drivetrain));
-        dev.b().whileTrue(new AlignToReef(true, drivetrain));
+        // Start experimental controls
+        joystick.y().whileTrue(new AlignToReef(true, drivetrain));
 
         drivetrain.registerTelemetry(logger::telemeterize);
     }

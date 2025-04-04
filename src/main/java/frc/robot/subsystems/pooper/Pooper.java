@@ -7,6 +7,7 @@ import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.hardware.CANrange;
 import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.BaseStatusSignal;
 import com.ctre.phoenix6.SignalLogger;
 
 import static edu.wpi.first.units.Units.*;
@@ -16,6 +17,7 @@ import edu.wpi.first.math.filter.Debouncer.DebounceType;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.measure.Current;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -34,8 +36,8 @@ public class Pooper extends SubsystemBase {
     private final CANrange coralSensor = new CANrange(32);
 
     private final VoltageOut coralRollerRequest = new VoltageOut(0);
-    private final VelocityVoltage algaeRollerRequest = new VelocityVoltage(0);
-    private final MotionMagicVoltage pooperPivotRequest = new MotionMagicVoltage(0);
+    private final VoltageOut algaeRollerRequest = new VoltageOut(0);
+    private final MotionMagicVoltage pooperPivotRequest = new MotionMagicVoltage(-0.85);
     private final NeutralOut neutral = new NeutralOut();
     private final VoltageOut sysIdControl = new VoltageOut(0.0);
 
@@ -69,19 +71,18 @@ public class Pooper extends SubsystemBase {
         coralRoller.getConfigurator().apply(coralConfig);
         algaeRoller.getConfigurator().apply(algaeConfig);
         pooperPivot.getConfigurator().apply(pooperPivotConfig);
-        pooperPivot.setControl(pooperPivotRequest);
+        pooperPivot.setControl(neutral);
         pooperPivot.setPosition(0);
 
         coralSensor.getConfigurator().apply(coralSensorConfig);
     }
 
-    public void runCoralRoller() {
-        coralRoller.setControl(coralRollerRequest.withOutput(1.1
-        ));
+    public void runCoralRoller(double volts) {
+        coralRoller.setControl(coralRollerRequest.withOutput(volts));
     }
 
-    public void runAlgaeRoller(double rps) {
-        algaeRoller.setControl(algaeRollerRequest.withVelocity(rps));
+    public void runAlgaeRoller(double volts) {
+        algaeRoller.setControl(algaeRollerRequest.withOutput(volts));
     }
 
     public void runPooperPivot(double angle) {
@@ -89,11 +90,9 @@ public class Pooper extends SubsystemBase {
     }
 
     public void stopCoral() {
+        coralRoller.setControl(coralRollerRequest.withOutput(-0.1));
+        Timer.delay(1);
         coralRoller.setControl(coralRollerRequest.withOutput(0));
-    }
-
-    public void stopAlgae() {
-        algaeRoller.setControl(neutral);
     }
 
     public BooleanSupplier hasCoral() {
@@ -118,6 +117,8 @@ public class Pooper extends SubsystemBase {
             
     @Override
     public void periodic() {
+        BaseStatusSignal.refreshAll(pivotPosition, pivotTarget, pivotError, coralSensorHasCoral, algaeMotorStall, algaeMotorStatorCurrent, algaeRollerVelocity);
+        SmartDashboard.putNumber("Pooper/Pivot/Position", pivotPosition.getValueAsDouble());
         SmartDashboard.putBoolean("Pooper/Coral Sensor/Has Coral", this.hasCoral().getAsBoolean());
     }
 }

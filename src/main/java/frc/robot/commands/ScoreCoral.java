@@ -5,14 +5,18 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.subsystems.elevator.Elevator;
 import frc.robot.subsystems.pooper.Pooper;
+import static frc.robot.subsystems.elevator.ElevatorConstants.*;
 import static frc.robot.subsystems.pooper.PooperConstants.*;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
-public class IntakeCoral extends Command {
-  private Pooper m_pooper;
-  /** Creates a new IntakeCoral. */
-  public IntakeCoral(Pooper pooper) {
+public class ScoreCoral extends Command {
+  private final Elevator m_elevator;
+  private final Pooper m_pooper;
+  /** Creates a new ScoreCoral. */
+  public ScoreCoral(Elevator elevator, Pooper pooper) {
+    m_elevator = elevator;
     m_pooper = pooper;
     // Use addRequirements() here to declare subsystem dependencies.
   }
@@ -20,7 +24,11 @@ public class IntakeCoral extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_pooper.runCoralRoller(CORAL_INTAKE_VOLTS);
+    if (m_elevator.getElevatorHeight() > ELEVATOR_L3_POS + 0.5) {
+      m_pooper.runCoralRoller(CORAL_SCORING_VOLTS_L4);
+    } else {
+      m_pooper.runCoralRoller(CORAL_SCORING_VOLTS_L1_3);
+    }
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -36,6 +44,6 @@ public class IntakeCoral extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return m_pooper.hasCoral().getAsBoolean();
+    return !m_pooper.hasCoral().getAsBoolean();
   }
 }
