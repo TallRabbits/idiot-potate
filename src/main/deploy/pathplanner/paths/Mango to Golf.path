@@ -33,8 +33,8 @@
   "pointTowardsZones": [],
   "eventMarkers": [
     {
-      "name": "",
-      "waypointRelativePos": 0,
+      "name": "L3",
+      "waypointRelativePos": 0.4814398200224932,
       "endWaypointRelativePos": null,
       "command": null
     }
