@@ -7,9 +7,7 @@ package frc.robot.commands;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
-import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -68,18 +66,14 @@ public class AlignToReef extends Command {
 
       double velocityX = m_xController.calculate(botPose3d.getX());
       double velocityY = m_yController.calculate(botPose3d.getZ());
-      double velocityRot = m_rotController.calculate(botPose3d.getRotation().getZ());
-      m_drivetrain.setControl(m_driveRequest.withVelocityX(velocityX).withVelocityY(velocityY).withRotationalRate(velocityRot));
+      double velocityRot = m_rotController.calculate(botPose3d.getRotation().getY());
+      m_drivetrain.setControl(m_driveRequest.withRotationalRate(velocityRot));
 
       SmartDashboard.putNumber("X Speed", velocityX);
       SmartDashboard.putNumber("Y Speed", velocityY);
       SmartDashboard.putNumber("Rot Speed", velocityRot);
 
-      SmartDashboard.putNumber("Target ID", tagID);
-
-      Field2d field = new Field2d();
-      SmartDashboard.putData("Pose", field);
-      field.setRobotPose(botPose3d.toPose2d());
+      SmartDashboard.putNumberArray("Bot Pose Tag Space", botPose);
 
       if (!m_xController.atSetpoint() || !m_yController.atSetpoint() || !m_rotController.atSetpoint()) {
         m_alignedDebounceTimer.reset();
