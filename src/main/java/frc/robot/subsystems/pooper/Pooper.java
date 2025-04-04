@@ -90,8 +90,6 @@ public class Pooper extends SubsystemBase {
     }
 
     public void stopCoral() {
-        coralRoller.setControl(coralRollerRequest.withOutput(-0.1));
-        Timer.delay(1);
         coralRoller.setControl(coralRollerRequest.withOutput(0));
     }
 
@@ -117,7 +115,7 @@ public class Pooper extends SubsystemBase {
             
     @Override
     public void periodic() {
-        BaseStatusSignal.refreshAll(pivotPosition, pivotTarget, pivotError, coralSensorHasCoral, algaeMotorStall, algaeMotorStatorCurrent, algaeRollerVelocity);
+        // BaseStatusSignal.refreshAll(pivotPosition, pivotTarget, pivotError, coralSensorHasCoral, algaeMotorStall, algaeMotorStatorCurrent, algaeRollerVelocity);
         SmartDashboard.putNumber("Pooper/Pivot/Position", pivotPosition.getValueAsDouble());
         SmartDashboard.putBoolean("Pooper/Coral Sensor/Has Coral", this.hasCoral().getAsBoolean());
     }

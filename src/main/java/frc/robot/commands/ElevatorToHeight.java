@@ -64,6 +64,6 @@ public class ElevatorToHeight extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return m_elevator.elevatorAtTarget();
+    return m_elevator.elevatorAtTarget(m_height);
   }
 }

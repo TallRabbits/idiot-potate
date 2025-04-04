@@ -19,7 +19,7 @@ import frc.robot.subsystems.CommandSwerveDrivetrain;
 public class AlignToReef extends Command {
   private final PIDController m_xController = new PIDController(1, 0, 0);
   private final PIDController m_yController = new PIDController(1, 0, 0);
-  private final PIDController m_rotController = new PIDController(0.1, 0, 0);
+  private final PIDController m_rotController = new PIDController(3, 0, 0);
 
   private final boolean m_isRightPipe;
   private final CommandSwerveDrivetrain m_drivetrain;
@@ -43,10 +43,10 @@ public class AlignToReef extends Command {
     m_invalidTagTimer.start();
     m_alignedDebounceTimer.start();
 
-    m_xController.setSetpoint(m_isRightPipe ? -0.34 : 0.34);
+    m_xController.setSetpoint(m_isRightPipe ? -0.18 : 0.18);
     m_xController.setTolerance(0.03);
 
-    m_yController.setSetpoint(0.16);
+    m_yController.setSetpoint(-0.67);
     m_yController.setTolerance(0.03);
 
     m_rotController.setSetpoint(0);

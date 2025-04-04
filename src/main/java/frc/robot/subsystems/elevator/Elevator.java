@@ -65,11 +65,26 @@ public class Elevator extends SubsystemBase {
         elevatorLeader.setControl(elevatorLeaderRequest.withPosition(height));
     }
 
-    public boolean elevatorAtTarget() {
-        if (elevatorLeader.getClosedLoopError().getValue() < 0.1) {
-            return true;
-        } else {
-            return false;
+    public boolean elevatorAtTarget(RobotStates m_height) {
+        switch (m_height) {
+            case L1:
+              return Math.abs(this.getElevatorHeight() - ELEVATOR_L1_POS) < 0.1;
+            case L2:
+              return Math.abs(this.getElevatorHeight() - ELEVATOR_L2_POS) < 0.1;        
+            case L3:
+              return Math.abs(this.getElevatorHeight() - ELEVATOR_L3_POS) < 0.1;        
+            case L4:
+              return Math.abs(this.getElevatorHeight() - ELEVATOR_L4_POS) < 0.1;        
+            case DEALGAE_UPPER:
+              return Math.abs(this.getElevatorHeight() - ELEVATOR_DEALGAE_UPPER_POS) < 0.1;        
+            case DEALGAE_LOWER:
+              return Math.abs(this.getElevatorHeight() - ELEVATOR_DEALGAE_LOWER_POS) < 0.1;        
+            case BARGE:
+              return Math.abs(this.getElevatorHeight() - ELEVATOR_BARGE_POS) < 0.1;        
+            case CORAL_STATION:
+              return Math.abs(this.getElevatorHeight() - ELEVATOR_CORAL_STATION_POS) < 0.1;        
+            default:
+              return false;
         }
     }
 

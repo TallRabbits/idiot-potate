@@ -42,8 +42,9 @@ public class ElevatorConstants {
     public static final double ELEVATOR_INTAKE_UPPER_DANGER_POS = 0.0;
 
     public static final double ELEVATOR_L1_POS = 0.65;
-    public static final double ELEVATOR_L2_POS = 1.2;
-    public static final double ELEVATOR_L3_POS = 2.175;
+    public static final double ELEVATOR_L2_POS = 1.05;
+    public static final double ELEVATOR_L3_POS = 2.03;
+    ;
     public static final double ELEVATOR_L4_POS = 3.9;
 
     public static final double ELEVATOR_DEALGAE_UPPER_POS = 0.0;
