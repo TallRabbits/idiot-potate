@@ -54,7 +54,7 @@ public static final TalonFXConfiguration algaeConfig = new TalonFXConfiguration(
 
     public static final double CORAL_SCORING_VOLTS_L1_3 = -2.5;
     public static final double CORAL_SCORING_VOLTS_L4 = 2.5;
-    public static final double CORAL_INTAKE_VOLTS = 1.25;
+    public static final double CORAL_INTAKE_VOLTS = 1.15;
 
     public static final double ALGAE_SCORING_VOLTS = 2.5;
     public static final double ALGAE_INTAKE_VOLTS = -2.0;

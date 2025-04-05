@@ -26,7 +26,7 @@ public class ElevatorConstants {
         elevatorConfig.Slot0.kI = 0.0;
         elevatorConfig.Slot0.kD = 0.0;
         elevatorConfig.Slot0.GravityType = GravityTypeValue.Elevator_Static;
-        elevatorConfig.MotionMagic.MotionMagicAcceleration = 4.5;
+        elevatorConfig.MotionMagic.MotionMagicAcceleration = 4.75;
         elevatorConfig.MotionMagic.MotionMagicCruiseVelocity = 2;
         elevatorConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake;
         elevatorConfig.Feedback.SensorToMechanismRatio = 6;

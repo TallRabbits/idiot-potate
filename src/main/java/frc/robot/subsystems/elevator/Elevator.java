@@ -100,6 +100,10 @@ public class Elevator extends SubsystemBase {
         }
     }
 
+    public void resetElevator() {
+      elevatorLeader.setPosition(0);
+    }
+
     public void stop() {
         elevatorLeader.setControl(neutral);
     }

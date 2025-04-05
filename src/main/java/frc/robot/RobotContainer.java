@@ -16,6 +16,7 @@ import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.Constants.RobotStates;
@@ -66,6 +67,7 @@ public class RobotContainer {
 
         autoChooser = AutoBuilder.buildAutoChooser("Tests");
         SmartDashboard.putData("Auto Chooser", autoChooser);
+        SmartDashboard.putData("Zero Elevator", Commands.runOnce(() -> elevator.resetElevator()));
 
         configureBindings();
     }
@@ -161,7 +163,12 @@ public class RobotContainer {
         joystick.leftBumper().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
 
         // Start experimental controls
-        // joystick.y().whileTrue(new AlignToReef(true, drivetrain));
+        joystick.button(8).whileTrue(new AlignToReef(true, drivetrain));
+        joystick.button(7).whileTrue(new AlignToReef(false, drivetrain));
+        joystick.leftTrigger(0.25)
+            .whileTrue(drivetrain.applyRequest(() ->
+                forwardStraight.withVelocityX(0.25).withVelocityY(0))
+        );
 
         drivetrain.registerTelemetry(logger::telemeterize);
     }

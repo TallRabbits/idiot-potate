@@ -17,9 +17,9 @@ import frc.robot.subsystems.CommandSwerveDrivetrain;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
 public class AlignToReef extends Command {
-  private final PIDController m_xController = new PIDController(1, 0, 0);
-  private final PIDController m_yController = new PIDController(1, 0, 0);
-  private final PIDController m_rotController = new PIDController(3, 0, 0);
+  private final PIDController m_xController = new PIDController(7, 0, 0);
+  private final PIDController m_yController = new PIDController(7, 0, 0);
+  private final PIDController m_rotController = new PIDController(12, 0, 0);
 
   private final boolean m_isRightPipe;
   private final CommandSwerveDrivetrain m_drivetrain;
@@ -43,14 +43,14 @@ public class AlignToReef extends Command {
     m_invalidTagTimer.start();
     m_alignedDebounceTimer.start();
 
-    m_xController.setSetpoint(m_isRightPipe ? -0.18 : 0.18);
-    m_xController.setTolerance(0.03);
+    m_xController.setSetpoint(-0.68); // TZ in tag space, X in robot space, foward back
+    m_xController.setTolerance(0.01);
 
-    m_yController.setSetpoint(-0.67);
-    m_yController.setTolerance(0.03);
+    m_yController.setSetpoint(m_isRightPipe ? -0.18 : 0.18); // TX in tag space, Y in robot space, left right
+    m_yController.setTolerance(0.01);
 
-    m_rotController.setSetpoint(0);
-    m_rotController.setTolerance(1);
+    m_rotController.setSetpoint(-2); // RY in tage space, rotation/yaw in robot space
+    m_rotController.setTolerance(0.01);
 
     tagID = LimelightHelpers.getFiducialID("limelight-swerve");
   }
@@ -64,17 +64,21 @@ public class AlignToReef extends Command {
       double[] botPose = LimelightHelpers.getBotPose_TargetSpace("limelight-swerve");
       Pose3d botPose3d = LimelightHelpers.toPose3D(botPose);
 
-      double velocityX = m_xController.calculate(botPose3d.getX());
-      double velocityY = m_yController.calculate(botPose3d.getZ());
-      double velocityRot = m_rotController.calculate(botPose3d.getRotation().getY());
+      double velocityX = m_xController.calculate(botPose3d.getZ()); //TZ to align X
+      double velocityY = m_yController.calculate(botPose3d.getX() * -1); //TX to align Y
+      double velocityRot = m_rotController.calculate(Math.toRadians(botPose3d.getRotation().getY())) * -1; //RY to align rotation
       m_drivetrain.setControl(m_driveRequest.withRotationalRate(velocityRot));
 
       SmartDashboard.putNumber("X Speed", velocityX);
       SmartDashboard.putNumber("Y Speed", velocityY);
       SmartDashboard.putNumber("Rot Speed", velocityRot);
 
-      SmartDashboard.putNumberArray("Bot Pose Tag Space", botPose);
+      SmartDashboard.putBoolean("YAS", m_xController.atSetpoint());
+      SmartDashboard.putBoolean("XAS", m_yController.atSetpoint());
+      SmartDashboard.putBoolean("RAS", m_rotController.atSetpoint());
 
+      SmartDashboard.putNumberArray("Bot Pose Tag Space", botPose);
+      
       if (!m_xController.atSetpoint() || !m_yController.atSetpoint() || !m_rotController.atSetpoint()) {
         m_alignedDebounceTimer.reset();
       }
