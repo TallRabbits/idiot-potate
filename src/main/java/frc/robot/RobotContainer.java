@@ -10,7 +10,9 @@ import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.auto.NamedCommands;
 
+import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -18,6 +20,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.Constants.RobotStates;
 import frc.robot.commands.AlignToReef;
+import frc.robot.commands.Dealgae;
 import frc.robot.commands.IntakeCoral;
 import frc.robot.commands.RobotToState;
 import frc.robot.commands.ScoreCoral;
@@ -57,8 +60,12 @@ public class RobotContainer {
     private final SendableChooser<Command> autoChooser;
 
     public RobotContainer() {
+        NamedCommands.registerCommand("L3", new RobotToState(elevator, pooper, RobotStates.L3));
+        NamedCommands.registerCommand("L4", new RobotToState(elevator, pooper, RobotStates.L4));
+        NamedCommands.registerCommand("spitCoral", new ScoreCoral(elevator, pooper));
+
         autoChooser = AutoBuilder.buildAutoChooser("Tests");
-        SmartDashboard.putData("Auto Mode", autoChooser);
+        SmartDashboard.putData("Auto Chooser", autoChooser);
 
         configureBindings();
     }
@@ -103,22 +110,22 @@ public class RobotContainer {
         );
 
         joystick.povUp()
-            .onTrue(new RobotToState(elevator, pooper, RobotStates.L4)
+            .whileTrue(new RobotToState(elevator, pooper, RobotStates.L4)
             //.alongWith(new AlignToReef(false, drivetrain))
         );
 
         joystick.povRight()
-            .onTrue(new RobotToState(elevator, pooper, RobotStates.L3)
+            .whileTrue(new RobotToState(elevator, pooper, RobotStates.L3)
             //.alongWith(new AlignToReef(false, drivetrain))
         );
 
         joystick.povLeft()
-            .onTrue(new RobotToState(elevator, pooper, RobotStates.L2)
+            .whileTrue(new RobotToState(elevator, pooper, RobotStates.L2)
             //.alongWith(new AlignToReef(false, drivetrain))
         );
 
         joystick.povDown()
-            .onTrue(new RobotToState(elevator, pooper, RobotStates.L1)
+            .whileTrue(new RobotToState(elevator, pooper, RobotStates.L1)
             //.alongWith(new AlignToReef(false, drivetrain))
         );
 
@@ -127,16 +134,21 @@ public class RobotContainer {
         );
 
         joystick.a()
-            .onTrue(new RobotToState(elevator, pooper, RobotStates.PROCESSOR)
+            .whileTrue(new RobotToState(elevator, pooper, RobotStates.DEALGAE_LOWER)
+            .alongWith(new Dealgae(pooper))
         );
 
-        joystick.leftTrigger(0.5)
-            .onTrue(new RobotToState(elevator, pooper, RobotStates.DEALGAE_UPPER)
+        joystick.b()
+            .whileTrue(new RobotToState(elevator, pooper, RobotStates.DEALGAE_UPPER)
+            .alongWith(new Dealgae(pooper))
         );
 
-        joystick.leftBumper()
-            .onTrue(new RobotToState(elevator, pooper, RobotStates.BARGE)
+        joystick.y()
+            .onTrue(pooper.runOnce(() -> pooper.runAlgaeRoller(-7))
         );
+        // joystick.leftBumper()
+        //     .onTrue(new RobotToState(elevator, pooper, RobotStates.BARGE)
+        // );
 
         // Run SysId routines when holding back/start and X/Y.
         // Note that each routine should be run exactly once in a single log.
@@ -149,7 +161,7 @@ public class RobotContainer {
         joystick.leftBumper().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
 
         // Start experimental controls
-        joystick.y().whileTrue(new AlignToReef(true, drivetrain));
+        // joystick.y().whileTrue(new AlignToReef(true, drivetrain));
 
         drivetrain.registerTelemetry(logger::telemeterize);
     }

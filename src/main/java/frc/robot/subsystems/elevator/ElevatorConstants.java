@@ -47,8 +47,8 @@ public class ElevatorConstants {
     ;
     public static final double ELEVATOR_L4_POS = 3.9;
 
-    public static final double ELEVATOR_DEALGAE_UPPER_POS = 0.0;
-    public static final double ELEVATOR_DEALGAE_LOWER_POS = 0.0;
+    public static final double ELEVATOR_DEALGAE_UPPER_POS = 2.2;
+    public static final double ELEVATOR_DEALGAE_LOWER_POS = 1.2;
 
     public static final double ELEVATOR_BARGE_POS = 0.0;
 
